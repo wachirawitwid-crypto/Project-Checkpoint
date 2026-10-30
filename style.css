@@ -1,0 +1,256 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Poppins', sans-serif;
+}
+
+body {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    font-family: 'Outfit', 'Kanit', sans-serif;
+    justify-content: center;
+    align-items: center;
+    background-color: rgb(255, 111, 0);
+    padding: 1rem;
+    overflow: hidden;
+}
+
+
+.ball {
+    position: absolute;
+    width: 800px;
+    height: 800px;
+    border-radius: 50%;
+    z-index: -1;
+    background-image: radial-gradient(circle, rgba(255, 251, 227, 0.8) 0%, rgba(255, 255, 255, 0));
+    box-shadow:
+        0 0 80px 40px rgba(255, 255, 255, 0.2),
+        0 0 120px 60px rgba(255, 255, 255, 0.1);
+    top: 15%;
+    left: 7%;
+    transform: translate(-50%, -50%);
+    z-index: 1;
+    pointer-events: none;
+    opacity: 80%;
+}
+
+.ball2 {
+    position: absolute;
+    width: 500px;
+    height: 500px;
+    border-radius: 50%;
+    opacity: 80%;
+    background-image: radial-gradient(circle, rgba(230, 40, 0, 0.9) 0%, rgba(230, 45, 0, 0.35) 70%, rgba(230, 45, 0, 0.35));
+
+    box-shadow:
+        0 0 90px 45px rgba(230, 45, 0, 0.35),
+        0 0 150px 75px rgba(255, 100, 50, 0.15);
+
+    top: 80%;
+    left: 7%;
+    transform: translate(-30%, -30%);
+
+    border: none;
+    z-index: 1;
+    pointer-events: none;
+}
+
+.ball3 {
+    position: absolute;
+    width: 700px;
+    height: 700px;
+    border-radius: 50%;
+    opacity: 80%;
+    background-image: radial-gradient(circle, rgba(249, 168, 54, 0.9) 0%, rgba(249, 168, 54, 0.35) 70%, rgba(249, 168, 54, 0.35));
+
+    box-shadow:
+        0 0 90px 45px rgba(249, 168, 54, 0.35),
+        0 0 150px 75px rgba(249, 168, 54, 0.15);
+
+    top: 80%;
+    left: 80%;
+    transform: translate(-30%, -30%);
+
+    border: none;
+    z-index: 1;
+    pointer-events: none;
+}
+
+.icon_title{
+    position: relative;
+    color: rgb(255, 111, 0);
+}
+.icon_title::before{
+    content: '';
+    position: absolute;
+    width: 26%;
+    left: -1%;
+    top: -10%;
+    height: 120%;
+    background: rgb(255, 219, 178);
+    z-index: -1;
+    border-radius: 1rem;
+}
+
+.card {
+    display: grid;
+    grid-template-columns: 1fr;
+
+    width: 90%;
+    max-width: 850px;
+
+    min-height: 500px;
+
+    text-align: start;
+    background-color: rgb(254, 254, 254);
+    border-radius: 1rem;
+    padding: 2rem;
+    z-index: 1;
+}
+
+.card-body {
+    display: grid;
+    gap: 1rem;
+}
+
+#project {
+    background-color: rgba(255, 208, 181, 0.544);
+    color: rgb(255, 111, 0);
+    height: 100%;
+    padding: 10px 10px;
+    border-radius: 1rem;
+    font-size: 10px;
+    font-weight: bold;
+    width: fit-content;
+}
+
+.card-body h1 {
+    position: relative;
+    font-weight: bold;
+    top: -7px;
+    border-bottom: 2px solid rgba(0, 0, 0, 0.193);
+    padding-bottom: 15px;
+}
+
+.bar {
+    display: flex;
+    position: relative;
+    justify-content: center;
+    gap: 13rem;
+    text-align: center;
+    padding: auto;
+}
+
+.activate{
+    display: flex;
+    text-decoration: none;
+    width: 30px;
+    height: 30px;
+    color: white;
+    justify-content: center;
+    align-items: center;
+    border-radius: 50%;
+    box-shadow: 0px 0px 10px rgba(251, 164, 106, 0.616);
+    background-image: linear-gradient(120deg,rgb(254, 151, 82),rgb(247, 51, 41));
+}
+
+.not_activate{
+    display: flex;
+    text-decoration: none;
+    width: 30px;
+    height: 30px;
+    color: gray;
+    justify-content: center;
+    align-items: center;
+    border-radius: 50%;
+    background-color: rgb(216, 216, 216);
+}
+
+#required{
+    display: flex;
+    margin: 0;
+    padding: 0;
+    align-items: center;
+    font-size: 15px;
+}
+
+.bar::before{
+    content: '';
+    position: absolute;
+    border: 2px solid rgb(205, 204, 204);
+    box-shadow: 0px 0px 3px rgb(205, 204, 204);
+    width: 70%;
+    border-radius: 1rem;
+    top: 45%;
+    z-index: -1;
+}
+
+.detile{
+    position: absolute;
+    display: flex;
+    justify-content: center;
+    font-size: 10px;
+    font-weight: bold;
+    top: 29%;
+    left: 18%;
+    gap: 160px;
+}
+
+.title {
+    margin-top: 25px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 2px solid rgba(0, 0, 0, 0.193);
+    padding-bottom: 15px;
+}
+
+.title h3 {
+    font-size: 20px;
+    font-weight: bold;
+}
+
+.title .p{
+    position: absolute;
+    margin: 0px;
+}
+
+/* จัดโครงสร้างกล่องครอบรวม (ถ้ามี) ให้มีระยะห่าง */
+.input_box {
+    display: grid;
+    gap: 1.2rem;
+    /* ระยะห่างระหว่างแถวบนล่าง */
+}
+
+.input_text{
+    margin-top: 10px;
+    outline: none;
+    border: none;
+    border-radius: 0.7rem;
+    padding: 20px;
+    background-color: rgb(243, 240, 240);
+}
+
+.input_text:focus{
+    background-color: white;
+    border-color: orange;
+    box-shadow: 0 0 10px orange;
+}
+
+/* ทำให้ FULL NAME และ PORTFOLIO ID TAG เรียงซ้าย-ขวา */
+.name {
+    display: grid;
+    grid-template-columns: 2fr 1fr;
+    /* ให้ฝั่งซ้ายกว้างเป็น 2 ส่วน ฝั่งขวาเป็น 1 ส่วน */
+    gap: 1.5rem;
+    /* ระยะห่างระหว่างช่องซ้ายและขวา */
+    align-items: center;
+}
+
+/* ทำให้ช่อง input ขยายเต็มความกว้างของคอลัมน์ตัวเอง */
+.full_name input,
+.Id input {
+    width: 100%;
+}
