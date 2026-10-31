@@ -27,17 +27,27 @@
             <span class="icon_title">CS100 TEAM PROJECT</span>
             <h1>Power Up! Portfolio</h1>
             <div class="bar">
-                <a class="activate" href="">1</a>
-                <a class="not_activate" href="">2</a>
-                <a class="not_activate" href="">3</a>
-            </div>
-            <div class="detile">
-                <p>Basic Details</p>
-                <p>Add Works / Items</p>
-                <p>Portfolio Showcase</p>
+                <!-- สเต็ปที่ 1 -->
+                <div class="step-item">
+                    <a id="bar_1" class="activate" href="#">1</a>
+                    <p class="step-text">Basic Details</p>
+                </div>
+
+                <!-- สเต็ปที่ 2 -->
+                <div class="step-item">
+                    <a id="bar_2" class="not_activate" href="#">2</a>
+                    <p class="step-text">Add Works / Items</p>
+                </div>
+
+                <!-- สเต็ปที่ 3 -->
+                <div class="step-item">
+                    <a id="bar_3" class="not_activate" href="#">3</a>
+                    <p class="step-text">Portfolio Showcase</p>
+                </div>
             </div>
             <div class="title">
-                <h3><ion-icon name="bookmarks" style="color: rgb(242, 132, 59);"></ion-icon></ion-icon> Add Portfolio Item</h3>
+                <h3><ion-icon name="bookmarks" style="color: rgb(242, 132, 59);"></ion-icon></ion-icon> Add Portfolio
+                    Item</h3>
                 <p id="required" style="color: rgba(128, 128, 128, 0.47);">* Required for CS100 Portfolio</p>
             </div>
 
@@ -45,34 +55,37 @@
                 <div class="name">
                     <div class="full_name">
                         <label for="">FULL NAME / DISPLAY NAME *</label><br>
-                        <input class="input_text" type="text" placeholder="e.g Aliex Rivera or Somchai Jaidee" style="height: 30px; color: rgb(155, 155, 155);">
+                        <input class="input_text" type="text" placeholder="e.g Aliex Rivera or Somchai Jaidee"
+                            style="height: 30px; color: rgb(155, 155, 155);margin-top: 10px;">
                     </div>
                     <div class="Id">
                         <label>PORTFOLIO ID TAG</label><br>
-                        <input class="input_text" type="text" placeholder="portfolio_1" style="height: 20px;color: rgb(155, 155, 155);">
+                        <input class="input_text" type="text" placeholder="portfolio_1"
+                            style="height: 20px;color: rgb(155, 155, 155); margin-top: 10px;">
                     </div>
-                </div> 
-
-                <div class="input_box">
-                    <label for="">WHAT I ENJOY (ชอบทำอะไร)</label>
-                    <input type="text">
                 </div>
 
                 <div class="input_box">
                     <label for="">WHAT I ENJOY (ชอบทำอะไร)</label>
-                    <input type="text">
+                    <textarea class="input_text" type="text" placeholder="Building web apps, solving algorithmic puzzles, playing games"></textarea>
+                </div>
+
+                <div class="input_box">
+                    <label for="">WHAT I'VE TRIED (ลองทำอะไรมาแล้วบ้าง) *</label>
+                    <textarea class="input_text" type="text" style="height: 150px;" placeholder="HTML5, CSS3, JavaScript ES6, Git Basics"></textarea>
                 </div>
                 <div class="input_box">
-                    <label for="">WHAT I ENJOY (ชอบทำอะไร)</label>
-                    <input type="text">
+                    <label for="">WHAT I'M CURIOUS ABOUT (สนใจหรืออยากรู้อะไรเพิ่ม) *</label>
+                    <textarea class="input_text" type="text" style="height: 80px;" placeholder="React.js, Node.js, Cloud Computing with AWS"></textarea>
                 </div>
             </div>
             <div class="parent-box">
-                <button id="submit" href="">Save Profile & Continue</button>
+                <button id="submit" href="" onclick="updateStep(2)">Save Profile & Continue</button>
             </div>
         </div>
     </div>
 
+    <script src="app.js"></script>
     <script type="module" src="https://unpkg.com/ionicons@8.0.13/dist/ionicons/ionicons.esm.js"></script>
     <script nomodule src="https://unpkg.com/ionicons@8.0.13/dist/ionicons/ionicons.js"></script>
     <script type="module" src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.esm.js"></script>

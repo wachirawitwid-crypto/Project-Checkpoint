@@ -14,7 +14,8 @@ body {
     align-items: center;
     background-color: rgb(255, 111, 0);
     padding: 1rem;
-    overflow: hidden;
+    overflow-y: auto;
+    overflow-x: hidden;
 }
 
 
@@ -78,31 +79,27 @@ body {
     pointer-events: none;
 }
 
-.icon_title{
+.icon_title {
     position: relative;
-    color: rgb(255, 111, 0);
-}
-.icon_title::before{
-    content: '';
-    position: absolute;
+    color: rgb(255, 123, 22);
+    background: rgba(255, 219, 178, 0.589);
     width: 26%;
-    left: -1%;
-    top: -10%;
     height: 120%;
-    background: rgb(255, 219, 178);
-    z-index: -1;
+    padding-top: 5px;
+    text-align: center;
     border-radius: 1rem;
+    font-size: 15px;
 }
+
 
 .card {
+    position: relative;
     display: grid;
     grid-template-columns: 1fr;
-
     width: 90%;
     max-width: 850px;
-
     min-height: 500px;
-
+    min-height: auto;
     text-align: start;
     background-color: rgb(254, 254, 254);
     border-radius: 1rem;
@@ -130,20 +127,76 @@ body {
     position: relative;
     font-weight: bold;
     top: -7px;
-    border-bottom: 2px solid rgba(0, 0, 0, 0.193);
+    border-bottom: 1px solid rgba(186, 186, 186, 0.413);
     padding-bottom: 15px;
 }
 
 .bar {
     display: flex;
     position: relative;
-    justify-content: center;
-    gap: 13rem;
-    text-align: center;
-    padding: auto;
+    justify-content: space-between;
+    align-items: flex-start;
+    width: 70%;
+    margin: 0 auto 10px auto;
 }
 
-.activate{
+.bar::before {
+    content: '';
+    position: absolute;
+    top: 14px;
+    left: 15%;
+    right: 55px;
+    height: 3px;
+    border-radius: 1rem;
+    background-color: rgb(205, 204, 204);
+    z-index: 0;
+}
+
+.bar.active::before {
+    border: none;
+    outline: none;
+    transform-origin: left;
+    background: linear-gradient(to right, rgb(242, 132, 59) 50%, rgb(205, 204, 204) 50%) !important;
+    animation: moving_bar 0.5s ease-in-out forwards;
+}
+
+.bar.active2::before{
+    border: none;
+    outline: none;
+    transform-origin: left;
+    background: linear-gradient(to right, rgb(242, 132, 59) 100%) !important;
+    animation: moving_bar 0.5s ease-in-out forwards;
+}
+
+@keyframes moving_bar {
+    to{
+        transform: translateX(0);
+    }
+    from{
+        transform: translateX(1);
+    }
+}
+
+.step-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    position: relative;
+    z-index: 1;
+    gap: 8px;
+    width: 110px;     
+}
+
+/* ข้อความใต้ไอคอน */
+.step-text {
+    font-size: 11px;
+    font-weight: bold;
+    color: #555;
+    white-space: nowrap;
+    margin: 0;
+}
+
+.activate {
     display: flex;
     text-decoration: none;
     width: 30px;
@@ -153,10 +206,10 @@ body {
     align-items: center;
     border-radius: 50%;
     box-shadow: 0px 0px 10px rgba(251, 164, 106, 0.616);
-    background-image: linear-gradient(120deg,rgb(254, 151, 82),rgb(247, 51, 41));
+    background-image: linear-gradient(120deg, rgb(254, 151, 82), rgb(247, 51, 41));
 }
 
-.not_activate{
+.not_activate {
     display: flex;
     text-decoration: none;
     width: 30px;
@@ -168,15 +221,27 @@ body {
     background-color: rgb(216, 216, 216);
 }
 
-#required{
+.complete{
+    display: flex;
+    text-decoration: none;
+    width: 30px;
+    height: 30px;
+    color: white;
+    justify-content: center;
+    align-items: center;
+    border-radius: 50%;
+    background-color: rgb(79, 208, 79);
+}
+
+#required {
     display: flex;
     margin: 0;
     padding: 0;
     align-items: center;
-    font-size: 15px;
+    font-size: 12px;
 }
 
-.bar::before{
+.bar::before {
     content: '';
     position: absolute;
     border: 2px solid rgb(205, 204, 204);
@@ -187,23 +252,28 @@ body {
     z-index: -1;
 }
 
-.detile{
-    position: absolute;
+.detile {
+    position: fixed;
+    /* ล็อกตำแหน่งให้อยู่กับที่บนหน้าจอ */
     display: flex;
     justify-content: center;
     font-size: 10px;
     font-weight: bold;
-    top: 29%;
-    left: 18%;
+    top: 26%;
+    /* ระยะห่างจากขอบบนของหน้าจอ */
+    left: 32%;
+    /* ระยะห่างจากขอบซ้ายของหน้าจอ */
     gap: 160px;
+    z-index: 10;
+    /* ให้แสดงอยู่ด้านบนสุด ไม่ให้มีอะไรมาบัง */
 }
 
 .title {
-    margin-top: 25px;
+    margin-top: 0px;
     display: flex;
     justify-content: space-between;
     align-items: center;
-    border-bottom: 2px solid rgba(0, 0, 0, 0.193);
+    border-bottom: 1px solid rgba(186, 186, 186, 0.413);
     padding-bottom: 15px;
 }
 
@@ -212,7 +282,7 @@ body {
     font-weight: bold;
 }
 
-.title .p{
+.title .p {
     position: absolute;
     margin: 0px;
 }
@@ -224,8 +294,7 @@ body {
     /* ระยะห่างระหว่างแถวบนล่าง */
 }
 
-.input_text{
-    margin-top: 10px;
+.input_text {
     outline: none;
     border: none;
     border-radius: 0.7rem;
@@ -233,7 +302,7 @@ body {
     background-color: rgb(243, 240, 240);
 }
 
-.input_text:focus{
+.input_text:focus {
     background-color: white;
     border-color: orange;
     box-shadow: 0 0 10px orange;
@@ -253,4 +322,77 @@ body {
 .full_name input,
 .Id input {
     width: 100%;
+}
+
+.parent-box {
+    display: flex;
+    justify-content: end;
+}
+
+#submit {
+    position: relative;
+    padding: 10px 20px;
+    border-radius: 2rem;
+    border: none;
+    outline: none;
+    color: white;
+    font-size: 1rem;
+    font-weight: bold;
+    box-shadow: 0px 0px 10px rgba(251, 164, 106, 0.616);
+    background-image: linear-gradient(to right, rgb(254, 151, 82), rgb(255, 90, 35));
+    cursor: pointer;
+    transition: transform 0.2s linear;
+}
+
+#submit:hover {
+    transform: translateY(-2px);
+}
+
+
+
+@media (max-width: 600px) {
+    .card {
+        padding: 1.25rem;
+        /* ลด padding การ์ดลงเมื่ออยู่บนมือถือ */
+    }
+
+    /* ปรับ Layout ช่องกรอกชื่อ-ไอดี ให้เรียงต่อกันเป็นแนวตั้ง */
+    .name {
+        grid-template-columns: 1fr;
+        gap: 1rem;
+    }
+
+    /* ปรับขนาดข้อความและหัวข้อ */
+    .card-body h1 {
+        font-size: 1.4rem;
+    }
+
+    .title h3 {
+        font-size: 1.1rem;
+    }
+
+    /* ย่อขนาดลูกบอลตกแต่งเพื่อไม่ให้บังหน้าจอ */
+    .ball {
+        width: 300px;
+        height: 300px;
+    }
+
+    .ball2,
+    .ball3 {
+        width: 250px;
+        height: 250px;
+    }
+
+    /* ปรับขนาดตัวอักษรของขั้นตอน (Stepper Detail) */
+    .detile {
+        font-size: 0.7rem;
+    }
+}
+
+/* --- สำหรับหน้าจอขนาดแท็บเล็ต (601px - 900px) --- */
+@media (max-width: 900px) {
+    .ball {
+        width: 500px;
+        height: 500px;
+    }
 }
