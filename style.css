@@ -112,6 +112,34 @@ body {
     gap: 1rem;
 }
 
+.card_content_page_1 {
+    display: grid;
+    gap: 1rem;
+}
+
+.card_content_page_1.not_active {
+    display: none;
+}
+.card_content_page_2 {
+    display: none;
+}
+
+.card_content_page_2.active {
+    display: grid;
+    gap: 1rem;
+}
+
+.card_content_page_3 {
+    display: none;
+}
+
+.card_content_page_3.active {
+    display: grid;
+    gap: 1rem;
+}
+
+
+
 #project {
     background-color: rgba(255, 208, 181, 0.544);
     color: rgb(255, 111, 0);
@@ -131,6 +159,7 @@ body {
     padding-bottom: 15px;
 }
 
+/* 1. โครงสร้างหลัก (แนวนอนปกติ) */
 .bar {
     display: flex;
     position: relative;
@@ -140,6 +169,7 @@ body {
     margin: 0 auto 10px auto;
 }
 
+/* 2. เส้นพื้นหลัง (สีเทา) */
 .bar::before {
     content: '';
     position: absolute;
@@ -152,30 +182,109 @@ body {
     z-index: 0;
 }
 
-.bar.active::before {
+/* ขาเดินหน้าปกติ */
+.bar.step2::before {
     border: none;
     outline: none;
     transform-origin: left;
-    background: linear-gradient(to right, rgb(242, 132, 59) 50%, rgb(205, 204, 204) 50%) !important;
-    animation: moving_bar 0.5s ease-in-out forwards;
+    background: linear-gradient(to right, rgb(242, 132, 59) 100%, rgb(205, 204, 204) 50%) !important;
+    animation: slideToStep2 0.8s ease-in-out forwards;
 }
 
-.bar.active2::before{
+.bar.step3::before {
     border: none;
     outline: none;
     transform-origin: left;
     background: linear-gradient(to right, rgb(242, 132, 59) 100%) !important;
-    animation: moving_bar 0.5s ease-in-out forwards;
+    animation: slideToStep3 0.8s ease-in-out forwards;
 }
 
-@keyframes moving_bar {
-    to{
-        transform: translateX(0);
+/* ================= ขาถอยหลัง (Reverse) ================= */
+
+/* ถอยจากสเต็ป 3 กลับมาสเต็ป 2 (หดจาก 1 เหลือ 0.5) */
+.bar.back-to-step2::before {
+    border: none;
+    outline: none;
+    transform-origin: left;
+    background: linear-gradient(to right, rgb(242, 132, 59) 100%, rgb(205, 204, 204) 50%) !important;
+    animation: backToStep2 0.8s ease-in-out forwards;
+}
+
+/* ถอยจากสเต็ป 2 หรือ 3 กลับมาสเต็ป 1 (หดจากตำแหน่งเดิมกลับเป็น 0) */
+.bar.back-to-step1::before {
+    border: none;
+    outline: none;
+    transform-origin: left;
+    background: linear-gradient(to right, rgb(242, 132, 59) 100%, rgb(205, 204, 204) 50%) !important;
+    animation: backToStep1 0.8s ease-in-out forwards;
+}
+
+.bar.start::before {
+    border: none;
+    outline: none;
+    transform-origin: left;
+    background: linear-gradient(to right, rgb(242, 132, 59) 100%, rgb(205, 204, 204) 50%) !important;
+    animation: startAnimation 0.1ms ease-in-out forwards;
+}
+
+@keyframes startAnimation {
+    0% {
+        transform: scaleX(0);
     }
-    from{
-        transform: translateX(1);
+
+    100% {
+        transform: scaleX(0);
     }
 }
+
+/* --- Keyframes ขาไป --- */
+@keyframes slideToStep2 {
+    0% {
+        transform: scaleX(0);
+    }
+
+    100% {
+        transform: scaleX(0.5);
+    }
+}
+
+@keyframes slideToStep3 {
+    0% {
+        transform: scaleX(0.5);
+    }
+
+    100% {
+        transform: scaleX(1);
+    }
+}
+
+/* --- Keyframes ขาถอยหลัง --- */
+@keyframes backToStep2 {
+    0% {
+        transform: scaleX(1);
+    }
+
+    /* เริ่มจากเต็มหลอด (สเต็ป 3) */
+    100% {
+        transform: scaleX(0.5);
+    }
+
+    /* หดถอยมาเหลือครึ่งทาง (สเต็ป 2) */
+}
+
+@keyframes backToStep1 {
+    0% {
+        transform: scaleX(0.5);
+    }
+
+    /* เริ่มจากครึ่งทางหรือจุดที่ค้างอยู่ */
+    100% {
+        transform: scaleX(0);
+    }
+
+    /* หดถอยกลับไปเป็น 0 (สเต็ป 1) */
+}
+
 
 .step-item {
     display: flex;
@@ -184,7 +293,7 @@ body {
     position: relative;
     z-index: 1;
     gap: 8px;
-    width: 110px;     
+    width: 110px;
 }
 
 /* ข้อความใต้ไอคอน */
@@ -196,6 +305,7 @@ body {
     margin: 0;
 }
 
+/* สถานะของไอคอน */
 .activate {
     display: flex;
     text-decoration: none;
@@ -209,6 +319,7 @@ body {
     background-image: linear-gradient(120deg, rgb(254, 151, 82), rgb(247, 51, 41));
 }
 
+/* สถานะของไอคอนตอนที่ยังไม่ถูกเลือก */
 .not_activate {
     display: flex;
     text-decoration: none;
@@ -221,7 +332,8 @@ body {
     background-color: rgb(216, 216, 216);
 }
 
-.complete{
+/* สถานะของไอคอนตอนที่เสร็จแล้ว */
+.complete {
     display: flex;
     text-decoration: none;
     width: 30px;
