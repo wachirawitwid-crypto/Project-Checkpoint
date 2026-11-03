@@ -24,9 +24,11 @@
     <div class="ball3"></div>
     <div class="card">
         <div class="card-body">
+            <!-- Header / Project Info -->
             <span class="icon_title">CS100 TEAM PROJECT</span>
             <h1>Power Up! Portfolio</h1>
 
+            <!-- Progress Bar -->
             <div class="bar">
                 <!-- สเต็ปที่ 1 -->
                 <div class="step-item">
@@ -44,64 +46,143 @@
                     <p class="step-text">Portfolio Showcase</p>
                 </div>
             </div>
+
+            <!-- ==================== PAGE 1 ==================== -->
             <div class="card_content_page_1">
                 <div class="title">
-                    <h3><ion-icon name="bookmarks" style="color: rgb(242, 132, 59);"></ion-icon></ion-icon> Add
-                        Portfolio
-                        Item</h3>
-                    <p id="required" style="color: rgba(128, 128, 128, 0.47);">* Required for CS100 Portfolio</p>
+                    <h3>
+                        <ion-icon name="bookmarks" style="color: rgb(242, 132, 59);"></ion-icon>
+                        Add Portfolio Item
+                    </h3>
+                    <p id="required" style="color: rgba(128, 128, 128, 0.47);">
+                        Required for CS100 Portfolio
+                    </p>
                 </div>
+
                 <div class="input_box">
-                    <div class="name">
-                        <div class="full_name">
-                            <label for="">FULL NAME / DISPLAY NAME *</label><br>
+                    <div class="input-group-2">
+                        <div class="input_group_item_1">
+                            <label>FULL NAME / DISPLAY NAME *</label><br>
                             <input class="input_text" type="text" placeholder="e.g Aliex Rivera or Somchai Jaidee"
-                                style="height: 30px; color: rgb(155, 155, 155);margin-top: 10px;">
+                                style="height: 30px; color: rgb(155, 155, 155); margin-top: 10px;">
                         </div>
-                        <div class="Id">
+                        <div class="input_group_item_2">
                             <label>PORTFOLIO ID TAG</label><br>
                             <input class="input_text" type="text" placeholder="portfolio_1"
-                                style="height: 20px;color: rgb(155, 155, 155); margin-top: 10px;">
+                                style="height: 20px; color: rgb(155, 155, 155); margin-top: 10px;">
                         </div>
                     </div>
+
                     <div class="input_box">
-                        <label for="">WHAT I ENJOY (ชอบทำอะไร)</label>
-                        <textarea class="input_text" type="text"
+                        <label>WHAT I ENJOY (ชอบทำอะไร)</label>
+                        <textarea class="input_text"
                             placeholder="Building web apps, solving algorithmic puzzles, playing games"></textarea>
                     </div>
+
                     <div class="input_box">
-                        <label for="">WHAT I'VE TRIED (ลองทำอะไรมาแล้วบ้าง) *</label>
-                        <textarea class="input_text" type="text" style="height: 150px;"
+                        <label>WHAT I'VE TRIED (ลองทำอะไรมาแล้วบ้าง) *</label>
+                        <textarea class="input_text" style="height: 150px;"
                             placeholder="HTML5, CSS3, JavaScript ES6, Git Basics"></textarea>
                     </div>
+
                     <div class="input_box">
-                        <label for="">WHAT I'M CURIOUS ABOUT (สนใจหรืออยากรู้อะไรเพิ่ม) *</label>
-                        <textarea class="input_text" type="text" style="height: 80px;"
+                        <label>WHAT I'M CURIOUS ABOUT (สนใจหรืออยากรู้อะไรเพิ่ม) *</label>
+                        <textarea class="input_text" style="height: 80px;"
                             placeholder="React.js, Node.js, Cloud Computing with AWS"></textarea>
                     </div>
                 </div>
+
                 <div class="parent-box">
-                    <button id="submit" href="" onclick="updateStep(2)">Save Profile & Continue</button>
+                    <button id="submit" onclick="updateStep(2)">Save Profile & Continue</button>
                 </div>
             </div>
 
-            <div class="card_content_page_2">
+            <!-- ==================== PAGE 2 ==================== -->
+            <div class="card_content_page_2" >
                 <div class="title">
-                    <h3><ion-icon name="folder" style="color: rgb(242, 132, 59);"></ion-icon> Add Portfolio Item
-                        Item</h3>
-                    <p id="required" style="color: rgba(128, 128, 128, 0.47);">* Required for CS100 Portfolio</p>
+                    <h3>
+                        <ion-icon name="folder" style="color: rgb(242, 132, 59);"></ion-icon>
+                        Add Portfolio Item
+                    </h3>
+                    <p class="head_icon" id="required" style="color: rgba(128, 128, 128, 0.47);">
+                        Editing: Somchai Developer
+                    </p>
+                </div>
+
+                <div class="input_box">
+                    <div class="input-group-2">
+                        <div class="input_group_item_1">
+                            <label>FULL NAME / DISPLAY NAME *</label><br>
+                            <input class="input_text" type="text" placeholder="e.g Aliex Rivera or Somchai Jaidee"
+                                style="height: 30px; color: rgb(155, 155, 155); margin-top: 5px;">
+                        </div>
+                        <div class="input_group_item_2">
+                            <label for="province">TYPE (ประเภท) *</label>
+                            <select id="province" name="province" style="width: 100%; height: 100%;" required>
+                                <option value="" disabled selected>-- Select --</option>
+                                <option value="1">1</option>
+                                <option value="2">2</option>
+                                <option value="3">3</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="input-group-2" style="grid-template-columns: 1fr 2fr;">
+                        <div class="input_group_item_1">
+                            <label>DATE *</label><br>
+                            <input class="input_text" type="date"
+                                style="height: 30px; color: rgb(155, 155, 155); margin-top: 5px;">
+                        </div>
+                        <div class="input_group_item_2">
+                            <label>PORTFOLIO ID TAG</label><br>
+                            <input class="input_text" type="text" placeholder="portfolio_1"
+                                style="height: 20px; color: rgb(155, 155, 155); margin-top: 5px;">
+                        </div>
+                    </div>
+                    
+                    <div class="input_box">
+                        <label>DESCRIPTION (รายละเอียด) *</label>
+                        <textarea class="input_text" style="height: 80px;"
+                            placeholder="React.js, Node.js, Cloud Computing with AWS"></textarea>
+                    </div>
+
+                    <div class="input_box">
+                        <label>SKILLS (แยกด้วยเครื่องหมายจุลภาค) *</label>
+                        <textarea class="input_text"
+                            style="height: 50px; display: flex; align-items: center; padding: 0 20px; line-height: 50px;"
+                            placeholder="React.js, Node.js, Cloud Computing with AWS"></textarea>
+                    </div>
+                </div>
+
+                <div class="card_body" id = "Reflection" >
+                    <p style="color: rgb(145, 145, 145); font-size: 14px; margin-bottom: 10px;">Upload Portfolio Image</p>
                 </div>
                 <div class="parent-box">
-                    <button id="submit" href="" onclick="updateStep(3)">Save Profile & Continue</button>
+                    <a class="back_page" onclick="updateStep(1)">
+                        <ion-icon name="arrow-back-circle"
+                            style="color: rgb(145, 145, 145);font-size: 30px;cursor: pointer;"></ion-icon>
+                            Back
+                    </a>
+                    <button id="submit" onclick="updateStep(3)">Save Profile & Continue</button>
                 </div>
             </div>
+
+            <!-- ==================== PAGE 3 ==================== -->
             <div class="card_content_page_3">
                 <div class="title">
-                    <h3><ion-icon name="ribbon" style="color: rgb(242, 132, 59);"></ion-icon> Add Portfolio Item
-                        Item</h3>
+                    <h3>
+                        <ion-icon name="ribbon" style="color: rgb(242, 132, 59);"></ion-icon>
+                        Add Portfolio Item
+                    </h3>
                 </div>
+
                 <div class="parent-box">
-                    <button id="submit" href="" onclick="updateStep(3)">Save Profile & Continue</button>
+                    <a class="back_page" onclick="updateStep(2)">
+                        <ion-icon name="arrow-back-circle"
+                            style="color: rgb(145, 145, 145); font-size: 30px;"></ion-icon>
+                            Back
+                    </a>
+                    <button id="submit" onclick="updateStep(3)">Save Profile & Continue</button>
                 </div>
             </div>
         </div>

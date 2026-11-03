@@ -120,6 +120,7 @@ body {
 .card_content_page_1.not_active {
     display: none;
 }
+
 .card_content_page_2 {
     display: none;
 }
@@ -188,7 +189,7 @@ body {
     outline: none;
     transform-origin: left;
     background: linear-gradient(to right, rgb(242, 132, 59) 100%, rgb(205, 204, 204) 50%) !important;
-    animation: slideToStep2 0.8s ease-in-out forwards;
+    animation: slideToStep2 0.5s ease-in-out forwards;
 }
 
 .bar.step3::before {
@@ -196,7 +197,7 @@ body {
     outline: none;
     transform-origin: left;
     background: linear-gradient(to right, rgb(242, 132, 59) 100%) !important;
-    animation: slideToStep3 0.8s ease-in-out forwards;
+    animation: slideToStep3 0.5s ease-in-out forwards;
 }
 
 /* ================= ขาถอยหลัง (Reverse) ================= */
@@ -207,7 +208,7 @@ body {
     outline: none;
     transform-origin: left;
     background: linear-gradient(to right, rgb(242, 132, 59) 100%, rgb(205, 204, 204) 50%) !important;
-    animation: backToStep2 0.8s ease-in-out forwards;
+    animation: backToStep2 0.5s ease-in-out forwards;
 }
 
 /* ถอยจากสเต็ป 2 หรือ 3 กลับมาสเต็ป 1 (หดจากตำแหน่งเดิมกลับเป็น 0) */
@@ -216,7 +217,7 @@ body {
     outline: none;
     transform-origin: left;
     background: linear-gradient(to right, rgb(242, 132, 59) 100%, rgb(205, 204, 204) 50%) !important;
-    animation: backToStep1 0.8s ease-in-out forwards;
+    animation: backToStep1 0.5s ease-in-out forwards;
 }
 
 .bar.start::before {
@@ -421,7 +422,7 @@ body {
 }
 
 /* ทำให้ FULL NAME และ PORTFOLIO ID TAG เรียงซ้าย-ขวา */
-.name {
+.input-group-2 {
     display: grid;
     grid-template-columns: 2fr 1fr;
     /* ให้ฝั่งซ้ายกว้างเป็น 2 ส่วน ฝั่งขวาเป็น 1 ส่วน */
@@ -431,14 +432,24 @@ body {
 }
 
 /* ทำให้ช่อง input ขยายเต็มความกว้างของคอลัมน์ตัวเอง */
-.full_name input,
-.Id input {
+.input_group_item_1 input,
+.input_group_item_2 input {
     width: 100%;
 }
 
 .parent-box {
     display: flex;
-    justify-content: end;
+    justify-content: space-between;
+}
+
+.back_page {
+    display: flex;
+    gap: 5px;
+    align-items: center;
+    text-decoration: none;
+    color: rgb(57, 56, 56);
+    font-size: 1rem;
+    cursor: pointer;
 }
 
 #submit {
@@ -460,7 +471,21 @@ body {
     transform: translateY(-2px);
 }
 
+.head_icon {
+    display: flex;
+    margin: 0;
+    padding: 0;
+    align-items: center;
+    font-size: 12px;
+}
 
+.Reflection{
+    display: flex; 
+    flex-direction: column;gap: 10px;
+    border-color: rgb(178, 178, 178); 
+    border-radius: 10px; 
+    padding: 20px;
+}
 
 @media (max-width: 600px) {
     .card {

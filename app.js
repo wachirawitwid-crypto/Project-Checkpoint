@@ -2,6 +2,7 @@ const bar = document.querySelector(".bar");
 const bar_1 = document.querySelector("#bar_1");
 const bar_2 = document.querySelector("#bar_2");
 const bar_3 = document.querySelector("#bar_3");
+const back_page = document.querySelectorAll(".back_page");
 
 // ประกาศตัวแปรหน้าเนื้อหาให้ครบถ้วน
 const card_content_page_1 = document.querySelector(".card_content_page_1");
