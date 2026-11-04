@@ -551,6 +551,25 @@ body {
     box-shadow: 0 0 0 3px rgba(242, 132, 59, 0.15);
 }
 
+/* ================= Added Items for Current Portfolio ================= */
+.empty-state {
+    font-size: 14px;
+    color: #6b7280;
+    text-align: center;
+    padding: 20px 0;
+    border: 1px dashed #d1d5db;
+    border-radius: 8px;
+    background-color: #f9fafb;
+}
+.item-id {
+    font-size: 14px;
+    color: #f99716;
+    background: #fff1e6;
+    padding: 2px 8px;
+    border-radius: 6px;
+    font-weight: bold;
+}
+
 @media (max-width: 600px) {
     .card {
         padding: 1.25rem;
@@ -584,10 +603,14 @@ body {
         height: 250px;
     }
 
-    .reflection-grid {
-        grid-template-columns: 1fr;
-    }
-
+    .reflection-grid {
+
+        grid-template-columns: 1fr;
+
+    }
+
+
+
     /* ปรับขนาดตัวอักษรของขั้นตอน (Stepper Detail) */
     .detile {
         font-size: 0.7rem;

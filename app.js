@@ -114,3 +114,48 @@ if (bar_3) {
         updateStep(3);
     });
 }
+
+//เกี่ยวกับ add item
+const itemcount = document.getElementById("item-Count");
+const itemList = document.getElementById("item-List");
+let items = [];
+function updateItem() {
+  itemcount.textContent = items.length + " items";
+  if (items.length === 0) {
+    itemList.innerHTML = '<div class="empty-state"> ยังไม่มีรายการผลงานใน Portfolio นี้ กดเพิ่มผลงานด้านบนได้เลย </div>';
+    return;
+  }
+  itemList.innerHTML = items.map(item => `
+        <div class="nested-card item-card d-flex align-items-start justify-content-between mb-3 p-3 border rounded-3">  
+            <div>
+                <span class="item-id">${item.id}</span>
+                <span class="text-muted"> ${item.type} | ${item.date}</span>
+                <h3 class="h6 fw-semibold mb-0">${item.title}</h3>
+                <p class="text-muted mb-0"><strong>${item.description}</strong></p>
+            </div>
+            <button type="button" class="btn btn-sm btn-outline-danger remove-btn flex-shrink-0" onclick="removeItem('${item.id}')">Remove</button>
+        </div>
+    `).join("");
+}
+
+let itemIdCounter = 1;
+  function additem() { 
+  const title = document.getElementById("item-title").value.trim();
+  const type = document.getElementById("item-type").value;
+  const date = document.getElementById("item-date").value;
+  const description = document.getElementById("item-description").value.trim();
+  const skills = document.getElementById("item-skills").value.trim();
+
+  if (title && type && date && description && skills) {
+    items.push({
+      id: `Item-${itemIdCounter++}`,title,type,date,description,skills
+    });
+    updateItem();
+  }
+}
+
+function removeItem(id) {
+  items = items.filter(item => item.id !== id);
+  updateItem();
+}
+updateItem();

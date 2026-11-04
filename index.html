@@ -112,13 +112,13 @@
                 <div class="input_box">
                     <div class="input-group-2">
                         <div class="input_group_item_1">
-                            <label>FULL NAME / DISPLAY NAME *</label><br>
-                            <input class="input_text" type="text" placeholder="e.g Aliex Rivera or Somchai Jaidee"
+                            <label>TITLE (ชื่อผลงาน) *</label><br>
+                            <input id="item-title" class="input_text" type="text" placeholder="e.g Personal Portfolio Website"
                                 style="height: 30px; color: rgb(155, 155, 155); margin-top: 5px;">
                         </div>
                         <div class="input_group_item_2">
-                            <label for="province">TYPE (ประเภท) *</label>
-                            <select id="province" name="province" style="width: 100%; height: 100%;" required>
+                            <label for="item-type">TYPE (ประเภท) *</label>
+                            <select id="item-type" name="item-type" style="width: 100%; height: 100%;" required>
                                 <option value="" disabled selected>-- Select --</option>
                                 <option value="1">1</option>
                                 <option value="2">2</option>
@@ -130,25 +130,25 @@
                     <div class="input-group-2" style="grid-template-columns: 1fr 2fr;">
                         <div class="input_group_item_1">
                             <label>DATE *</label><br>
-                            <input class="input_text" type="date"
+                            <input id="item-date" class="input_text" type="date"
                                 style="height: 30px; color: rgb(155, 155, 155); margin-top: 5px;">
                         </div>
                         <div class="input_group_item_2">
                             <label>PORTFOLIO ID TAG</label><br>
-                            <input class="input_text" type="text" placeholder="portfolio_1"
+                            <input id="item-id" class="input_text" type="text" placeholder="portfolio_1"
                                 style="height: 20px; color: rgb(155, 155, 155); margin-top: 5px;">
                         </div>
                     </div>
                      
                     <div class="input_box">
                         <label>DESCRIPTION (รายละเอียด) *</label>
-                        <textarea class="input_text" style="height: 80px;"
+                        <textarea id="item-description" class="input_text" style="height: 80px;"
                             placeholder="React.js, Node.js, Cloud Computing with AWS"></textarea>
                     </div>
 
                     <div class="input_box">
                         <label>SKILLS (แยกด้วยเครื่องหมายจุลภาค) *</label>
-                        <textarea class="input_text"
+                        <textarea id="item-skills" class="input_text"
                             style="height: 50px; display: flex; align-items: center; padding: 0 20px; line-height: 50px;"
                             placeholder="React.js, Node.js, Cloud Computing with AWS"></textarea>
                     </div>
@@ -185,7 +185,18 @@
                             style="color: rgb(145, 145, 145);font-size: 30px;cursor: pointer;"></ion-icon>
                             Back
                     </a>
-                    <button id="submit" onclick="updateStep(3)">Save Profile & Continue</button>
+                    <button id="submit" onclick="updateStep(3); additem();">Save Profile & Continue</button>
+                </div>
+                <!-- Added Items for Current Portfolio -->
+                <div class="mt-4 pt-4 border-top border-light-subtle">
+                    <div class="d-flex align-items-center mb-3">
+                        <h3 class="h6 fw-semibold mb-0">Added Items for Current Portfolio</h3>
+                        <span id="item-Count" class="badge rounded-pill bg-light text-secondary ms-auto">0 Items</span>
+                    </div>
+
+                      <div id="item-List">
+                        <div class="empty-state"> ยังไม่มีรายการผลงานใน Portfolio นี้ กดเพิ่มผลงานด้านบนได้เลย </div>
+                    </div>
                 </div>
             </div>
 
