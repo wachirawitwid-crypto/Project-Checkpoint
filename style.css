@@ -18,6 +18,11 @@ body {
     overflow-x: hidden;
 }
 
+.nested-card {
+    background-color: #f8fafc;
+    border: 1px solid #e2e8f0;
+    border-radius: 16px;
+}
 
 .ball {
     position: absolute;
@@ -479,12 +484,71 @@ body {
     font-size: 12px;
 }
 
-.Reflection{
-    display: flex; 
-    flex-direction: column;gap: 10px;
-    border-color: rgb(178, 178, 178); 
-    border-radius: 10px; 
-    padding: 20px;
+/* ================= Reflection Box Styling ================= */
+#Reflection.nested-card {
+    background-color: #f8fafc;
+    border: 1px solid #e2e8f0;
+    border-radius: 16px;
+    padding: 20px 24px;
+    margin: 10px 0 15px 0;
+}
+
+.reflection-header {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 15px;
+    font-weight: 700;
+    color: #334155;
+    margin-bottom: 16px;
+}
+
+.reflection-header i,
+.text-brand-500 {
+    color: rgb(242, 132, 59);
+    font-size: 16px;
+}
+
+.reflection-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 14px 20px;
+}
+
+.reflection-item {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+
+.reflection-item label {
+    font-size: 13px;
+    font-weight: 600;
+    color: #374151;
+}
+
+.reflection-input {
+    width: 100%;
+    height: 42px;
+    padding: 0 16px;
+    background-color: #ffffff;
+    border: 1px solid #e2e8f0;
+    border-radius: 10px;
+    font-size: 13px;
+    color: #333333;
+    outline: none;
+    transition: all 0.2s ease;
+}
+
+.reflection-input::placeholder {
+    color: #9ca3af;
+    font-size: 13px;
+}
+
+.reflection-input:focus {
+    background-color: #ffffff;
+    border-color: rgb(242, 132, 59);
+    box-shadow: 0 0 0 3px rgba(242, 132, 59, 0.15);
 }
 
 @media (max-width: 600px) {
@@ -520,6 +584,10 @@ body {
         height: 250px;
     }
 
+    .reflection-grid {
+        grid-template-columns: 1fr;
+    }
+
     /* ปรับขนาดตัวอักษรของขั้นตอน (Stepper Detail) */
     .detile {
         font-size: 0.7rem;

@@ -154,8 +154,30 @@
                     </div>
                 </div>
 
-                <div class="card_body" id = "Reflection" >
-                    <p style="color: rgb(145, 145, 145); font-size: 14px; margin-bottom: 10px;">Upload Portfolio Image</p>
+                <div class="nested-card" id="Reflection">
+                    <div class="reflection-header">
+                        <i class="fa-solid fa-brain text-brand-500"></i>
+                        <span>Reflection (4-Point Reflection)</span>
+                    </div>
+
+                    <div class="reflection-grid">
+                        <div class="reflection-item">
+                            <label>What I Did (ทำอะไรไปบ้าง) *</label>
+                            <input class="reflection-input" type="text" placeholder="e.g. Created mockups & wrote code">
+                        </div>
+                        <div class="reflection-item">
+                            <label>What I Learned (ได้เรียนรู้อะไร) *</label>
+                            <input class="reflection-input" type="text" placeholder="e.g. Learned localStorage & DOM manipulation">
+                        </div>
+                        <div class="reflection-item">
+                            <label>Challenge (อุปสรรค/ความท้าทาย) *</label>
+                            <input class="reflection-input" type="text" placeholder="e.g. Handling state between multiple users">
+                        </div>
+                        <div class="reflection-item">
+                            <label>Next Step (ขั้นตอนถัดไป) *</label>
+                            <input class="reflection-input" type="text" placeholder="e.g. Connect to real backend API">
+                        </div>
+                    </div>
                 </div>
                 <div class="parent-box">
                     <a class="back_page" onclick="updateStep(1)">
