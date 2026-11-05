@@ -64,31 +64,31 @@
                         <div class="input_group_item_1">
                             <label>FULL NAME / DISPLAY NAME *</label><br>
                             <input class="input_text" type="text" placeholder="e.g Aliex Rivera or Somchai Jaidee"
-                                style="height: 30px; color: rgb(155, 155, 155); margin-top: 10px;">
+                                style="height: 30px; margin-top: 10px;" id="full-name">
                         </div>
                         <div class="input_group_item_2">
                             <label>PORTFOLIO ID TAG</label><br>
                             <input class="input_text" type="text" placeholder="portfolio_1"
-                                style="height: 20px; color: rgb(155, 155, 155); margin-top: 10px;">
+                                style="height: 20px;margin-top: 10px;" id="studen_id">
                         </div>
                     </div>
 
                     <div class="input_box">
                         <label>WHAT I ENJOY (ชอบทำอะไร)</label>
                         <textarea class="input_text"
-                            placeholder="Building web apps, solving algorithmic puzzles, playing games"></textarea>
+                            placeholder="Building web apps, solving algorithmic puzzles, playing games" id="enjoy"></textarea>
                     </div>
 
                     <div class="input_box">
                         <label>WHAT I'VE TRIED (ลองทำอะไรมาแล้วบ้าง) *</label>
                         <textarea class="input_text" style="height: 150px;"
-                            placeholder="HTML5, CSS3, JavaScript ES6, Git Basics"></textarea>
+                            placeholder="HTML5, CSS3, JavaScript ES6, Git Basics" id="tried"></textarea>
                     </div>
 
                     <div class="input_box">
                         <label>WHAT I'M CURIOUS ABOUT (สนใจหรืออยากรู้อะไรเพิ่ม) *</label>
                         <textarea class="input_text" style="height: 80px;"
-                            placeholder="React.js, Node.js, Cloud Computing with AWS"></textarea>
+                            placeholder="React.js, Node.js, Cloud Computing with AWS" id="curious-about"></textarea>
                     </div>
                 </div>
 
@@ -118,7 +118,7 @@
                         </div>
                         <div class="input_group_item_2">
                             <label for="item-type">TYPE (ประเภท) *</label>
-                            <select id="item-type" name="item-type" style="width: 100%; height: 100%;" required>
+                            <select id="item-type" name="item-type" style="width: 100%; height: 100%;">
                                 <option value="" disabled selected>-- Select --</option>
                                 <option value="1">1</option>
                                 <option value="2">2</option>
@@ -134,8 +134,8 @@
                                 style="height: 30px; color: rgb(155, 155, 155); margin-top: 5px;">
                         </div>
                         <div class="input_group_item_2">
-                            <label>PORTFOLIO ID TAG</label><br>
-                            <input id="item-id" class="input_text" type="text" placeholder="portfolio_1"
+                            <label>ROLE (บทบาท) *</label><br>
+                            <input id="item-role" class="input_text" type="text" placeholder="portfolio_1"
                                 style="height: 20px; color: rgb(155, 155, 155); margin-top: 5px;">
                         </div>
                     </div>
@@ -163,19 +163,19 @@
                     <div class="reflection-grid">
                         <div class="reflection-item">
                             <label>What I Did (ทำอะไรไปบ้าง) *</label>
-                            <input class="reflection-input" type="text" placeholder="e.g. Created mockups & wrote code">
+                            <input class="reflection-input" id="item_did" type="text" placeholder="e.g. Created mockups & wrote code">
                         </div>
                         <div class="reflection-item">
                             <label>What I Learned (ได้เรียนรู้อะไร) *</label>
-                            <input class="reflection-input" type="text" placeholder="e.g. Learned localStorage & DOM manipulation">
+                            <input class="reflection-input" id="item_learned" type="text" placeholder="e.g. Learned localStorage & DOM manipulation">
                         </div>
                         <div class="reflection-item">
                             <label>Challenge (อุปสรรค/ความท้าทาย) *</label>
-                            <input class="reflection-input" type="text" placeholder="e.g. Handling state between multiple users">
+                            <input class="reflection-input" id="item_challenge" type="text" placeholder="e.g. Handling state between multiple users">
                         </div>
                         <div class="reflection-item">
                             <label>Next Step (ขั้นตอนถัดไป) *</label>
-                            <input class="reflection-input" type="text" placeholder="e.g. Connect to real backend API">
+                            <input class="reflection-input" id="item_next" type="text" placeholder="e.g. Connect to real backend API">
                         </div>
                     </div>
                 </div>
@@ -301,9 +301,7 @@
 
                 <div class="parent-box">
                     <a class="back_page" onclick="updateStep(2)">
-                        <ion-icon name="arrow-back-circle"
-                            style="color: rgb(145, 145, 145); font-size: 30px;"></ion-icon>
-                            Back
+                            <ion-icon name="add-outline"></ion-icon>  Add More Items
                     </a>
                     <button id="submit" onclick="updateStep(3)">Save Profile & Continue</button>
                 </div>
