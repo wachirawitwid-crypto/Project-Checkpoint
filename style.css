@@ -707,3 +707,73 @@ body {
     border-radius: 12px;
     border: 1px solid #e2e8f0;
 }
+
+/* Profile summary card */
+.profile-summary-card {
+    overflow: hidden;
+    padding: clamp(1.25rem, 3vw, 2rem);
+    color: #fff;
+    background: linear-gradient(125deg, #f99544 0%, #f27631 52%, #e95b28 100%);
+    border-radius: 20px;
+    box-shadow: 0 10px 24px rgba(226, 99, 40, 0.18);
+}
+
+.profile-summary-top {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 1rem;
+    padding-bottom: 1.25rem;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.28);
+}
+
+.profile-eyebrow {
+    display: block;
+    margin-bottom: 0.35rem;
+    color: rgba(255, 255, 255, 0.8);
+    font-size: 0.68rem;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+}
+
+.profile-summary-top h4 {
+    margin: 0;
+    font-size: clamp(1.3rem, 3vw, 1.75rem);
+    font-weight: 700;
+    letter-spacing: -0.03em;
+}
+
+.validated-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    flex-shrink: 0;
+    padding: 0.45rem 0.75rem;
+    color: #176344;
+    background: #e7f8ef;
+    border-radius: 999px;
+    font-size: 0.75rem;
+    font-weight: 700;
+}
+
+.profile-summary-details {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 1.25rem;
+    padding-top: 1.25rem;
+}
+
+.profile-detail span {
+    display: block;
+    margin-bottom: 0.4rem;
+    color: rgba(255, 255, 255, 0.82);
+    font-size: 0.75rem;
+    font-weight: 700;
+}
+
+.profile-detail p {
+    margin: 0;
+    color: #fff;
+    font-size: 0.875rem;
+    line-height: 1.55;
+}
