@@ -569,6 +569,19 @@ body {
     border-radius: 6px;
     font-weight: bold;
 }
+.item-box {
+    gap: 10px;
+    padding: 14px ;
+    transition: all 0.2s ease;
+    background-color: #f8fafc;
+    border: 1px solid #e2e8f0;
+    border-radius: 16px;
+}
+.item-box:hover {
+    border-color: rgba(242, 132, 59, 0.4);
+    box-shadow: 0 6px 10px rgba(242, 132, 59, 0.12);
+
+}
 
 @media (max-width: 600px) {
     .card {

@@ -126,7 +126,7 @@ function updateItem() {
     return;
   }
   itemList.innerHTML = items.map(item => `
-        <div class="nested-card item-card d-flex align-items-start justify-content-between mb-3 p-3 border rounded-3">  
+        <div class="item-box item-card d-flex align-items-start justify-content-between mb-3">  
             <div>
                 <span class="item-id">${item.id}</span>
                 <span class="text-muted"> ${item.type} | ${item.date}</span>
