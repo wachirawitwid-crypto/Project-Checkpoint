@@ -707,6 +707,7 @@ body {
     border-radius: 12px;
     border: 1px solid #e2e8f0;
 }
+<<<<<<< HEAD
 
 /* Profile summary card */
 .profile-summary-card {
@@ -777,3 +778,57 @@ body {
     font-size: 0.875rem;
     line-height: 1.55;
 }
+=======
+.input-box {
+  margin-bottom: 20px;
+}
+
+
+
+.input-box input[type="url"] {
+  width: 100%;
+  box-sizing: border-box;
+  padding: 16px 18px;
+  font-size: 15px;
+  color: #1f2937;
+  background: #f3f4f6;
+  border: 1px solid transparent;
+  border-radius: 12px;
+  outline: none;
+  transition: background 0.2s, border-color 0.2s, box-shadow 0.2s;
+}
+
+.input-box input[type="url"]::placeholder {
+  color: #9ca3af;
+}
+
+.input-box input[type="url"]:focus {
+  background: #fff;
+  border-color: #f08a3c;
+  box-shadow: 0 0 0 3px rgba(240, 138, 60, 0.18);
+}
+
+.input-box .hint {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin-top: 8px;
+  font-size: 12px;
+  color: #6b7280;
+}
+
+.input-box .hint::before {
+  content: "i";
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 14px;
+  height: 14px;
+  font-size: 10px;
+  font-weight: 700;
+  font-style: italic;
+  color: #fff;
+  background: #9ca3af;
+  border-radius: 50%;
+}
+>>>>>>> ea7ac3c8e744644de612dfe5551cb74870a97e6c
