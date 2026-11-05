@@ -707,13 +707,12 @@ body {
     border-radius: 12px;
     border: 1px solid #e2e8f0;
 }
-<<<<<<< HEAD
-
 /* Profile summary card */
 .profile-summary-card {
     overflow: hidden;
     padding: clamp(1.25rem, 3vw, 2rem);
     color: #fff;
+    background-color: #f27631;
     background: linear-gradient(125deg, #f99544 0%, #f27631 52%, #e95b28 100%);
     border-radius: 20px;
     box-shadow: 0 10px 24px rgba(226, 99, 40, 0.18);
@@ -778,7 +777,6 @@ body {
     font-size: 0.875rem;
     line-height: 1.55;
 }
-=======
 .input-box {
   margin-bottom: 20px;
 }
@@ -831,4 +829,3 @@ body {
   background: #9ca3af;
   border-radius: 50%;
 }
->>>>>>> ea7ac3c8e744644de612dfe5551cb74870a97e6c
