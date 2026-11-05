@@ -551,6 +551,25 @@ body {
     box-shadow: 0 0 0 3px rgba(242, 132, 59, 0.15);
 }
 
+/* ================= Added Items for Current Portfolio ================= */
+.empty-state {
+    font-size: 14px;
+    color: #6b7280;
+    text-align: center;
+    padding: 20px 0;
+    border: 1px dashed #d1d5db;
+    border-radius: 8px;
+    background-color: #f9fafb;
+}
+.item-id {
+    font-size: 14px;
+    color: #f99716;
+    background: #fff1e6;
+    padding: 2px 8px;
+    border-radius: 6px;
+    font-weight: bold;
+}
+
 @media (max-width: 600px) {
     .card {
         padding: 1.25rem;
@@ -584,10 +603,14 @@ body {
         height: 250px;
     }
 
-    .reflection-grid {
-        grid-template-columns: 1fr;
-    }
-
+    .reflection-grid {
+
+        grid-template-columns: 1fr;
+
+    }
+
+
+
     /* ปรับขนาดตัวอักษรของขั้นตอน (Stepper Detail) */
     .detile {
         font-size: 0.7rem;
@@ -600,4 +623,87 @@ body {
         width: 500px;
         height: 500px;
     }
+}
+
+
+/* ================= Portfolio Items UI (Showcase - ดาส) ================= */
+.portfolio-items-section {
+    margin-top: 10px;
+    margin-bottom: 20px;
+}
+
+.portfolio-item-card {
+    background-color: #ffffff;
+    border: 1px solid #e2e8f0;
+    border-radius: 16px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+    transition: all 0.2s ease;
+}
+
+.portfolio-item-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 16px rgba(242, 132, 59, 0.12);
+    border-color: rgba(242, 132, 59, 0.4);
+}
+
+.item-tag-id {
+    font-size: 12px;
+    font-weight: 700;
+    color: #e65100;
+    background-color: #fff1e6;
+    padding: 3px 10px;
+    border-radius: 6px;
+    display: inline-block;
+}
+
+.item-meta-text {
+    font-size: 13px;
+    color: #64748b;
+}
+
+.item-card-title {
+    font-size: 1.1rem;
+    font-weight: 700;
+    color: #1e293b;
+}
+
+.item-role-text {
+    font-size: 13px;
+    color: #64748b;
+    font-weight: 500;
+}
+
+.item-card-desc {
+    font-size: 14px;
+    color: #475569;
+    line-height: 1.5;
+}
+
+.btn-evidence {
+    font-size: 12px;
+    font-weight: 600;
+    color: #ffffff !important;
+    background-image: linear-gradient(to right, rgb(254, 151, 82), rgb(255, 90, 35));
+    padding: 6px 14px;
+    border-radius: 20px;
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+    box-shadow: 0 2px 6px rgba(251, 164, 106, 0.4);
+    transition: transform 0.15s ease, box-shadow 0.15s ease;
+}
+
+.btn-evidence:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 4px 10px rgba(251, 164, 106, 0.6);
+}
+
+.portfolio-skill-pill {
+    font-size: 12px;
+    font-weight: 500;
+    color: #334155;
+    background-color: #f1f5f9;
+    padding: 3px 12px;
+    border-radius: 12px;
+    border: 1px solid #e2e8f0;
 }
