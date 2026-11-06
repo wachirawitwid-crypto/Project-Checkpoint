@@ -13,6 +13,14 @@ let currentStep = 1;
 bar.className = "bar";
 bar.classList.add('start');
 
+//เช็คว่าPORTFOLIO ID เป็นตัวเลขไหม
+const idInput = document.getElementById('studen_id');
+if (idInput) {
+    idInput.addEventListener('input', function () {
+        this.value = this.value.replace(/\D/g, '').slice(0, 10);
+    });
+}
+
 function updateStep(newStep) {
     // ถ้าผู้ใช้กำลังจะเดินหน้าไปสเต็ป 2 ให้ทำการตรวจเช็กข้อมูลก่อน
     updateProfilePreview();
@@ -22,8 +30,9 @@ function updateStep(newStep) {
         }
     }
     if (newStep === 3 && currentStep < 3) {
-        if (!check(3)) {
-            return; // ถ้าข้อมูลไม่ครบ ให้หยุดการทำงานทันที (ไม่เปลี่ยนหน้า)
+        if (items.length === 0) {
+            alert('กรุณาเพิ่มผลงานอย่างน้อย 1 รายการก่อนไปต่อครับ');
+            return;
         }
     }
     // ล้างคลาสแอนิเมชันเก่าทั้งหมดออกก่อน
@@ -46,7 +55,6 @@ function updateStep(newStep) {
             card_content_page_3.classList.remove('active');
             card_content_page_3.classList.add('not_active');
         }
-
         bar_1.className = "activate";
         bar_2.className = "not_activate";
         bar_3.className = "not_activate";
@@ -94,7 +102,7 @@ function updateStep(newStep) {
         bar_2.className = "complete";
         bar_3.className = "activate";
     }
-
+    updateProfilePreview();
     currentStep = newStep;
 }
 
@@ -118,6 +126,7 @@ if (bar_2) {
 if (bar_3) {
     bar_3.addEventListener("click", function (e) {
         e.preventDefault();
+        if (currentStep === 1 && !check(2)) return;
         updateStep(3);
     });
 }
@@ -137,8 +146,8 @@ function check(newStep) {
             inputs.fullName.focus();
             return false;
         }
-        if (inputs.ID_TAG && !inputs.ID_TAG.value.trim()) {
-            alert('กรุณากรอก PORTFOLIO ID TAG ด้วยครับ');
+        if (inputs.ID_TAG && !/^\d{10}$/.test(inputs.ID_TAG.value.trim())) {
+            alert('PORTFOLIO ID TAG ต้องเป็นตัวเลข 10 หลักพอดีครับ');
             inputs.ID_TAG.focus();
             return false;
         }
@@ -197,10 +206,15 @@ function check(newStep) {
             inputs_page2.role.focus();
             return false;
         }
+        const urlInput = document.getElementById('input-url');
+        if (urlInput && !/^https?:\/\/.+/.test(urlInput.value.trim())) {
+            alert('กรุณากรอก EVIDENCE เป็นลิงก์ที่ขึ้นต้นด้วย http:// หรือ https:// ครับ');
+            urlInput.focus();
+            return false;
+        }
 
         // หมายเหตุ: หากต้องการบังคับกรอกฟิลด์อื่นๆ ของหน้า 2 เพิ่มเติม (เช่น description, skills ฯลฯ) 
         // สามารถเพิ่มเงื่อนไข if เช็กในลักษณะเดียวกันตรงนี้ได้เลยครับ
-
         console.log(inputs_page2);
         return true; // ผ่านทุกเงื่อนไข
     }
@@ -221,13 +235,13 @@ function updateItem() {
     itemList.innerHTML = items.map((item, index) => `
         <div class="item-box item-card d-flex align-items-start justify-content-between mb-3">  
             <div>
-                <span class="item-id">Item-${index + 1}</span>
+                <span class="item-id">${item.id}</span>
                 <span class="text-muted"> ${item.type} | ${item.date}</span>
                 <h3 class="h6 fw-semibold mb-0">${item.title}</h3>
                 <p class="text-muted mb-0"><strong>Role:${item.description}</strong></p>
             </div>
             <!-- ส่งค่า index ไปใช้ลบ -->
-            <a class="remove_Item" onclick="removeItem(${index})"><ion-icon name="trash-bin"></ion-icon></a>
+            <a class="remove_Item" onclick="removeItem('${item.id}')"><ion-icon name="trash-bin"></ion-icon></a>
         </div>
     `).join("");
 }
@@ -243,63 +257,55 @@ function additem() {
         return;
     }
 
-    // 1. ดึงค่าจากฟอร์มพื้นฐาน
     const title = document.getElementById("item-title").value.trim();
     const type = document.getElementById("item-type").value;
     const date = document.getElementById("item-date").value;
     const description = document.getElementById("item-description").value.trim();
     const skills = document.getElementById("item-skills").value.trim();
 
-    // 2. ดึงค่าฟิลด์เสริมอื่นๆ (ป้องกัน Error กรณีที่ Element นั้นไม่มีอยู่จริง)
     const roleInput = document.getElementById("item-role");
     const role = roleInput ? roleInput.value.trim() : "";
 
-    const what_i_did = document.getElementById("item_did") ? document.getElementById("item_did").value.trim() : "";
-    const what_i_learned = document.getElementById("item_learned") ? document.getElementById("item_learned").value.trim() : "";
-    const challenge = document.getElementById("item_challenge") ? document.getElementById("item_challenge").value.trim() : "";
-    const next_step = document.getElementById("item_next") ? document.getElementById("item_next").value.trim() : "";
+    const what_i_did = document.getElementById("item_did")?.value.trim() || "";
+    const what_i_learned = document.getElementById("item_learned")?.value.trim() || "";
+    const challenge = document.getElementById("item_challenge")?.value.trim() || "";
+    const next_step = document.getElementById("item_next")?.value.trim() || "";
 
-    // ดึงค่าลิงก์หลักฐาน (ถ้ามีช่อง input id="item-link")
-    const linkInput = document.getElementById("item-link");
+    const linkInput = document.getElementById("input-url");
     const link = linkInput ? linkInput.value.trim() : "";
 
+    // สร้าง id ครั้งเดียว ใช้ร่วมกันทั้ง items และ content
     const newItemId = `Item-${ContentIdCounter++}`;
-    // 3. บันทึกลง items (สำหรับแสดงผลรายการย่อ)
-    items.push({
-        id: newItemId,
-        title, type, date, description, skills, role
-    });
 
-    // 4. บันทึกลง content (สำหรับแสดงผลการ์ดพรีวิวเต็มรูปแบบในหน้าสุดท้าย)
+    items.push({ id: newItemId, title, type, date, description, skills, role, link });
+
     content.push({
-        id: `Item-${ContentIdCounter++}`,
-        title,
-        type,
-        date,
-        description,
-        skills,
-        role,
-        what_i_did,
-        what_i_learned,
-        challenge,
-        next_step,
-        link
+        id: newItemId,
+        title, type, date, description, skills, role,
+        what_i_did, what_i_learned, challenge, next_step, link
     });
 
-    // 5. อัปเดตการแสดงผลทั้งสองส่วน
     updateItem();
     updateContent();
 
-    // (ทางเลือก) เคลียร์ฟอร์มหลังจากกดเพิ่มสำเร็จ
+    // เคลียร์ฟอร์ม
     document.getElementById("item-title").value = '';
     document.getElementById("item-description").value = '';
+    document.getElementById("item-skills").value = '';
     if (roleInput) roleInput.value = '';
-    if (document.getElementById("item-skills")) document.getElementById("item-skills").value = '';
     if (document.getElementById("item_did")) document.getElementById("item_did").value = '';
     if (document.getElementById("item_learned")) document.getElementById("item_learned").value = '';
     if (document.getElementById("item_challenge")) document.getElementById("item_challenge").value = '';
     if (document.getElementById("item_next")) document.getElementById("item_next").value = '';
     if (linkInput) linkInput.value = '';
+}
+
+function removeItem(id) {
+    // ลบตาม id ทั้งสองลิสต์ให้ตรงกัน
+    items = items.filter(item => item.id !== id);
+    content = content.filter(item => item.id !== id);
+    updateItem();
+    updateContent();
 }
 
 function removeItem(id) {
@@ -346,7 +352,7 @@ function updateProfilePreview() {
 function updateContent() {
     // 1. นับจำนวน item และแสดงผลที่ตัวนับ
     Contentcount.textContent = content.length + (content.length <= 1 ? " item" : " items");
-
+    console.log(document.getElementById("item-url"));
     // 2. ถ้ายังไม่มีข้อมูล ให้แสดงข้อความแจ้งเตือนสถานะว่าง
     if (content.length === 0) {
         ContentList.innerHTML = '<div class="empty-state"> ยังไม่มีรายการผลงานใน Portfolio นี้ กดเพิ่มผลงานด้านบนได้เลย </div>';
