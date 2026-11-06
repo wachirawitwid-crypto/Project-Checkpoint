@@ -30,6 +30,19 @@ if (idInput) {
     });
 }
 
+// ================= ฟังก์ชันป้องกัน XSS =================
+// แปลงอักขระพิเศษเป็น HTML entity ก่อนนำข้อความจากผู้ใช้ไปใส่ innerHTML
+function esc(str) {
+    return String(str ?? '').replace(/[&<>"']/g, c => ({
+        '&': '&amp;',
+        '<': '&lt;',
+        '>': '&gt;',
+        '"': '&quot;',
+        "'": '&#39;'
+    }[c]));
+}
+
+
 function updateStep(newStep) {
     if (newStep === 2 && currentStep < 2) {
         if (!check(2)) {
