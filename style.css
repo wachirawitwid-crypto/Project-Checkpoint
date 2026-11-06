@@ -2,7 +2,13 @@
     margin: 0;
     padding: 0;
     box-sizing: border-box;
-    font-family: 'Poppins', sans-serif;
+}
+
+input,
+textarea,
+select,
+button {
+    font-family: inherit;
 }
 
 body {
@@ -24,12 +30,12 @@ body {
     border-radius: 16px;
 }
 
+/* ================= ลูกบอลตกแต่ง ================= */
 .ball {
-    position: absolute;
+    position: fixed;
     width: 800px;
     height: 800px;
     border-radius: 50%;
-    z-index: -1;
     background-image: radial-gradient(circle, rgba(255, 251, 227, 0.8) 0%, rgba(255, 255, 255, 0));
     box-shadow:
         0 0 80px 40px rgba(255, 255, 255, 0.2),
@@ -43,78 +49,72 @@ body {
 }
 
 .ball2 {
-    position: absolute;
+    position: fixed;
     width: 500px;
     height: 500px;
     border-radius: 50%;
     opacity: 80%;
     background-image: radial-gradient(circle, rgba(230, 40, 0, 0.9) 0%, rgba(230, 45, 0, 0.35) 70%, rgba(230, 45, 0, 0.35));
-
     box-shadow:
         0 0 90px 45px rgba(230, 45, 0, 0.35),
         0 0 150px 75px rgba(255, 100, 50, 0.15);
-
     top: 80%;
     left: 7%;
     transform: translate(-30%, -30%);
-
     border: none;
     z-index: 1;
     pointer-events: none;
 }
 
 .ball3 {
-    position: absolute;
+    position: fixed;
     width: 700px;
     height: 700px;
     border-radius: 50%;
     opacity: 80%;
     background-image: radial-gradient(circle, rgba(249, 168, 54, 0.9) 0%, rgba(249, 168, 54, 0.35) 70%, rgba(249, 168, 54, 0.35));
-
     box-shadow:
         0 0 90px 45px rgba(249, 168, 54, 0.35),
         0 0 150px 75px rgba(249, 168, 54, 0.15);
-
     top: 80%;
     left: 80%;
     transform: translate(-30%, -30%);
-
     border: none;
     z-index: 1;
     pointer-events: none;
 }
 
+/* ================= การ์ดหลัก ================= */
 .icon_title {
     position: relative;
+    display: inline-block;
+    width: fit-content;
     color: rgb(255, 123, 22);
     background: rgba(255, 219, 178, 0.589);
-    width: 26%;
-    height: 120%;
-    padding-top: 5px;
+    padding: 5px 14px;
     text-align: center;
     border-radius: 1rem;
     font-size: 15px;
 }
 
-
 .card {
     position: relative;
     display: grid;
     grid-template-columns: 1fr;
-    width: 90%;
+    width: 100%;
     max-width: 850px;
-    min-height: 500px;
     min-height: auto;
     text-align: start;
     background-color: rgb(254, 254, 254);
     border-radius: 1rem;
     padding: 2rem;
-    z-index: 1;
+    z-index: 2;
 }
 
 .card-body {
     display: grid;
     gap: 1rem;
+    min-width: 0;
 }
 
 .card_content_page_1 {
@@ -144,19 +144,6 @@ body {
     gap: 1rem;
 }
 
-
-
-#project {
-    background-color: rgba(255, 208, 181, 0.544);
-    color: rgb(255, 111, 0);
-    height: 100%;
-    padding: 10px 10px;
-    border-radius: 1rem;
-    font-size: 10px;
-    font-weight: bold;
-    width: fit-content;
-}
-
 .card-body h1 {
     position: relative;
     font-weight: bold;
@@ -165,82 +152,54 @@ body {
     padding-bottom: 15px;
 }
 
-/* 1. โครงสร้างหลัก (แนวนอนปกติ) */
+/* ================= Progress bar ================= */
 .bar {
     display: flex;
     position: relative;
     justify-content: space-between;
     align-items: flex-start;
-    width: 70%;
+    width: 100%;
+    max-width: 520px;
     margin: 0 auto 10px auto;
 }
 
-/* 2. เส้นพื้นหลัง (สีเทา) */
-.bar::before {
+/* ::before = รางสีเทา, ::after = เส้นสีส้มที่วิ่งตามสเต็ป */
+.bar::before,
+.bar::after {
     content: '';
     position: absolute;
     top: 14px;
-    left: 15%;
-    right: 55px;
+    left: 16.666%;
+    right: 16.666%;
     height: 3px;
     border-radius: 1rem;
-    background-color: rgb(205, 204, 204);
     z-index: 0;
 }
 
-/* ขาเดินหน้าปกติ */
-.bar.step2::before {
-    border: none;
-    outline: none;
+.bar::before {
+    background-color: rgb(205, 204, 204);
+}
+
+.bar::after {
+    background-color: rgb(242, 132, 59);
+    transform: scaleX(0);
     transform-origin: left;
-    background: linear-gradient(to right, rgb(242, 132, 59) 100%, rgb(205, 204, 204) 50%) !important;
+}
+
+.bar.step2::after {
     animation: slideToStep2 0.5s ease-in-out forwards;
 }
 
-.bar.step3::before {
-    border: none;
-    outline: none;
-    transform-origin: left;
-    background: linear-gradient(to right, rgb(242, 132, 59) 100%) !important;
+.bar.step3::after {
     animation: slideToStep3 0.5s ease-in-out forwards;
 }
 
-/* ================= ขาถอยหลัง (Reverse) ================= */
-
-/* ถอยจากสเต็ป 3 กลับมาสเต็ป 2 (หดจาก 1 เหลือ 0.5) */
-.bar.back-to-step2::before {
-    border: none;
-    outline: none;
-    transform-origin: left;
-    background: linear-gradient(to right, rgb(242, 132, 59) 100%, rgb(205, 204, 204) 50%) !important;
+.bar.back-to-step2::after {
     animation: backToStep2 0.5s ease-in-out forwards;
 }
 
-/* ถอยจากสเต็ป 2 หรือ 3 กลับมาสเต็ป 1 (หดจากตำแหน่งเดิมกลับเป็น 0) */
-.bar.back-to-step1::before {
-    border: none;
-    outline: none;
-    transform-origin: left;
-    background: linear-gradient(to right, rgb(242, 132, 59) 100%, rgb(205, 204, 204) 50%) !important;
+.bar.back-to-step1::after {
     animation: backToStep1 0.5s ease-in-out forwards;
-}
-
-.bar.start::before {
-    border: none;
-    outline: none;
-    transform-origin: left;
-    background: linear-gradient(to right, rgb(242, 132, 59) 100%, rgb(205, 204, 204) 50%) !important;
-    animation: startAnimation 0.1ms ease-in-out forwards;
-}
-
-@keyframes startAnimation {
-    0% {
-        transform: scaleX(0);
-    }
-
-    100% {
-        transform: scaleX(0);
-    }
 }
 
 /* --- Keyframes ขาไป --- */
@@ -270,12 +229,9 @@ body {
         transform: scaleX(1);
     }
 
-    /* เริ่มจากเต็มหลอด (สเต็ป 3) */
     100% {
         transform: scaleX(0.5);
     }
-
-    /* หดถอยมาเหลือครึ่งทาง (สเต็ป 2) */
 }
 
 @keyframes backToStep1 {
@@ -283,31 +239,27 @@ body {
         transform: scaleX(0.5);
     }
 
-    /* เริ่มจากครึ่งทางหรือจุดที่ค้างอยู่ */
     100% {
         transform: scaleX(0);
     }
-
-    /* หดถอยกลับไปเป็น 0 (สเต็ป 1) */
 }
 
-
 .step-item {
+    flex: 1;
+    min-width: 0;
     display: flex;
     flex-direction: column;
     align-items: center;
     position: relative;
     z-index: 1;
     gap: 8px;
-    width: 110px;
 }
 
-/* ข้อความใต้ไอคอน */
 .step-text {
     font-size: 11px;
     font-weight: bold;
     color: #555;
-    white-space: nowrap;
+    text-align: center;
     margin: 0;
 }
 
@@ -325,7 +277,6 @@ body {
     background-image: linear-gradient(120deg, rgb(254, 151, 82), rgb(247, 51, 41));
 }
 
-/* สถานะของไอคอนตอนที่ยังไม่ถูกเลือก */
 .not_activate {
     display: flex;
     text-decoration: none;
@@ -338,7 +289,6 @@ body {
     background-color: rgb(216, 216, 216);
 }
 
-/* สถานะของไอคอนตอนที่เสร็จแล้ว */
 .complete {
     display: flex;
     text-decoration: none;
@@ -351,39 +301,13 @@ body {
     background-color: rgb(79, 208, 79);
 }
 
+/* ================= หัวข้อแต่ละหน้า ================= */
 #required {
     display: flex;
     margin: 0;
     padding: 0;
     align-items: center;
     font-size: 12px;
-}
-
-.bar::before {
-    content: '';
-    position: absolute;
-    border: 2px solid rgb(205, 204, 204);
-    box-shadow: 0px 0px 3px rgb(205, 204, 204);
-    width: 70%;
-    border-radius: 1rem;
-    top: 45%;
-    z-index: -1;
-}
-
-.detile {
-    position: fixed;
-    /* ล็อกตำแหน่งให้อยู่กับที่บนหน้าจอ */
-    display: flex;
-    justify-content: center;
-    font-size: 10px;
-    font-weight: bold;
-    top: 26%;
-    /* ระยะห่างจากขอบบนของหน้าจอ */
-    left: 32%;
-    /* ระยะห่างจากขอบซ้ายของหน้าจอ */
-    gap: 160px;
-    z-index: 10;
-    /* ให้แสดงอยู่ด้านบนสุด ไม่ให้มีอะไรมาบัง */
 }
 
 .title {
@@ -400,19 +324,22 @@ body {
     font-weight: bold;
 }
 
-.title .p {
-    position: absolute;
-    margin: 0px;
+.head_icon {
+    display: flex;
+    margin: 0;
+    padding: 0;
+    align-items: center;
+    font-size: 12px;
 }
 
-/* จัดโครงสร้างกล่องครอบรวม (ถ้ามี) ให้มีระยะห่าง */
+/* ================= ฟอร์ม ================= */
 .input_box {
     display: grid;
     gap: 1.2rem;
-    /* ระยะห่างระหว่างแถวบนล่าง */
 }
 
 .input_text {
+    width: 100%;
     outline: none;
     border: none;
     border-radius: 0.7rem;
@@ -426,17 +353,18 @@ body {
     box-shadow: 0 0 10px orange;
 }
 
-/* ทำให้ FULL NAME และ PORTFOLIO ID TAG เรียงซ้าย-ขวา */
 .input-group-2 {
     display: grid;
     grid-template-columns: 2fr 1fr;
-    /* ให้ฝั่งซ้ายกว้างเป็น 2 ส่วน ฝั่งขวาเป็น 1 ส่วน */
     gap: 1.5rem;
-    /* ระยะห่างระหว่างช่องซ้ายและขวา */
     align-items: center;
 }
 
-/* ทำให้ช่อง input ขยายเต็มความกว้างของคอลัมน์ตัวเอง */
+.input_group_item_1,
+.input_group_item_2 {
+    min-width: 0;
+}
+
 .input_group_item_1 input,
 .input_group_item_2 input {
     width: 100%;
@@ -476,15 +404,58 @@ body {
     transform: translateY(-2px);
 }
 
-.head_icon {
-    display: flex;
-    margin: 0;
-    padding: 0;
-    align-items: center;
-    font-size: 12px;
+.input-box {
+    margin-bottom: 20px;
 }
 
-/* ================= Reflection Box Styling ================= */
+.input-box input[type="url"] {
+    width: 100%;
+    box-sizing: border-box;
+    padding: 16px 18px;
+    font-size: 15px;
+    color: #1f2937;
+    background: #f3f4f6;
+    border: 1px solid transparent;
+    border-radius: 12px;
+    outline: none;
+    transition: background 0.2s, border-color 0.2s, box-shadow 0.2s;
+}
+
+.input-box input[type="url"]::placeholder {
+    color: #9ca3af;
+}
+
+.input-box input[type="url"]:focus {
+    background: #fff;
+    border-color: #f08a3c;
+    box-shadow: 0 0 0 3px rgba(240, 138, 60, 0.18);
+}
+
+.input-box .hint {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    margin-top: 8px;
+    font-size: 12px;
+    color: #6b7280;
+}
+
+.input-box .hint::before {
+    content: "i";
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 14px;
+    height: 14px;
+    font-size: 10px;
+    font-weight: 700;
+    font-style: italic;
+    color: #fff;
+    background: #9ca3af;
+    border-radius: 50%;
+}
+
+/* ================= Reflection Box ================= */
 #Reflection.nested-card {
     background-color: #f8fafc;
     border: 1px solid #e2e8f0;
@@ -519,6 +490,7 @@ body {
     display: flex;
     flex-direction: column;
     gap: 6px;
+    min-width: 0;
 }
 
 .reflection-item label {
@@ -556,7 +528,7 @@ body {
     font-size: 14px;
     color: #6b7280;
     text-align: center;
-    padding: 20px 0;
+    padding: 20px 10px;
     border: 1px dashed #d1d5db;
     border-radius: 8px;
     background-color: #f9fafb;
@@ -574,17 +546,21 @@ body {
 .item-box {
     position: relative;
     gap: 10px;
-    padding: 14px;
+    padding: 14px 14px 36px 14px;
     transition: all 0.2s ease;
     background-color: #f8fafc;
     border: 1px solid #e2e8f0;
     border-radius: 16px;
 }
 
+.item-box>div {
+    min-width: 0;
+    overflow-wrap: anywhere;
+}
+
 .item-box:hover {
     border-color: rgba(242, 132, 59, 0.4);
     box-shadow: 0 6px 10px rgba(242, 132, 59, 0.12);
-
 }
 
 .remove_Item {
@@ -595,63 +571,7 @@ body {
     cursor: pointer;
 }
 
-@media (max-width: 600px) {
-    .card {
-        padding: 1.25rem;
-        /* ลด padding การ์ดลงเมื่ออยู่บนมือถือ */
-    }
-
-    /* ปรับ Layout ช่องกรอกชื่อ-ไอดี ให้เรียงต่อกันเป็นแนวตั้ง */
-    .name {
-        grid-template-columns: 1fr;
-        gap: 1rem;
-    }
-
-    /* ปรับขนาดข้อความและหัวข้อ */
-    .card-body h1 {
-        font-size: 1.4rem;
-    }
-
-    .title h3 {
-        font-size: 1.1rem;
-    }
-
-    /* ย่อขนาดลูกบอลตกแต่งเพื่อไม่ให้บังหน้าจอ */
-    .ball {
-        width: 300px;
-        height: 300px;
-    }
-
-    .ball2,
-    .ball3 {
-        width: 250px;
-        height: 250px;
-    }
-
-    .reflection-grid {
-
-        grid-template-columns: 1fr;
-
-    }
-
-
-
-    /* ปรับขนาดตัวอักษรของขั้นตอน (Stepper Detail) */
-    .detile {
-        font-size: 0.7rem;
-    }
-}
-
-/* --- สำหรับหน้าจอขนาดแท็บเล็ต (601px - 900px) --- */
-@media (max-width: 900px) {
-    .ball {
-        width: 500px;
-        height: 500px;
-    }
-}
-
-
-/* ================= Portfolio Items UI (Showcase - ดาส) ================= */
+/* ================= Portfolio Items (Showcase) ================= */
 .portfolio-items-section {
     margin-top: 10px;
     margin-bottom: 20px;
@@ -663,6 +583,11 @@ body {
     border-radius: 16px;
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
     transition: all 0.2s ease;
+}
+
+.portfolio-item-card>div>div {
+    min-width: 0;
+    overflow-wrap: anywhere;
 }
 
 .portfolio-item-card:hover {
@@ -702,6 +627,7 @@ body {
     font-size: 14px;
     color: #475569;
     line-height: 1.5;
+    overflow-wrap: anywhere;
 }
 
 .btn-evidence {
@@ -753,6 +679,11 @@ body {
     border-bottom: 1px solid rgba(255, 255, 255, 0.28);
 }
 
+.profile-summary-top>div {
+    min-width: 0;
+    overflow-wrap: anywhere;
+}
+
 .profile-eyebrow {
     display: block;
     margin-bottom: 0.35rem;
@@ -802,6 +733,10 @@ body {
     padding-top: 1.25rem;
 }
 
+.profile-detail {
+    min-width: 0;
+}
+
 .profile-detail span {
     display: block;
     margin-bottom: 0.4rem;
@@ -815,57 +750,114 @@ body {
     color: #fff;
     font-size: 0.875rem;
     line-height: 1.55;
+    overflow-wrap: anywhere;
 }
 
-.input-box {
-    margin-bottom: 20px;
+/* ================= Responsive ================= */
+
+/* Tablet (<= 900px) */
+@media (max-width: 900px) {
+    .ball {
+        width: 500px;
+        height: 500px;
+    }
+
+    .profile-summary-details {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
 }
 
+/* Mobile (<= 600px) */
+@media (max-width: 600px) {
+    body {
+        padding: 0.5rem;
+    }
 
+    .card {
+        padding: 1.1rem;
+        border-radius: 0.8rem;
+    }
 
-.input-box input[type="url"] {
-    width: 100%;
-    box-sizing: border-box;
-    padding: 16px 18px;
-    font-size: 15px;
-    color: #1f2937;
-    background: #f3f4f6;
-    border: 1px solid transparent;
-    border-radius: 12px;
-    outline: none;
-    transition: background 0.2s, border-color 0.2s, box-shadow 0.2s;
-}
+    .card-body h1 {
+        font-size: 1.4rem;
+    }
 
-.input-box input[type="url"]::placeholder {
-    color: #9ca3af;
-}
+    /* ย่อลูกบอลตกแต่ง */
+    .ball {
+        width: 300px;
+        height: 300px;
+    }
 
-.input-box input[type="url"]:focus {
-    background: #fff;
-    border-color: #f08a3c;
-    box-shadow: 0 0 0 3px rgba(240, 138, 60, 0.18);
-}
+    .ball2,
+    .ball3 {
+        width: 250px;
+        height: 250px;
+    }
 
-.input-box .hint {
-    display: flex;
-    align-items: center;
-    gap: 6px;
-    margin-top: 8px;
-    font-size: 12px;
-    color: #6b7280;
-}
+    .step-text {
+        font-size: 10px;
+    }
 
-.input-box .hint::before {
-    content: "i";
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    width: 14px;
-    height: 14px;
-    font-size: 10px;
-    font-weight: 700;
-    font-style: italic;
-    color: #fff;
-    background: #9ca3af;
-    border-radius: 50%;
+    .title {
+        flex-wrap: wrap;
+        gap: 4px;
+    }
+
+    .title h3 {
+        font-size: 1.05rem;
+    }
+
+    /* 2 คอลัมน์ -> 1 คอลัมน์ (ทับ inline style ของหน้า 2 ด้วย) */
+    .input-group-2 {
+        grid-template-columns: 1fr !important;
+        gap: 1rem;
+    }
+
+    .input_text {
+        padding: 14px;
+    }
+
+    #item-type {
+        height: 42px !important;
+    }
+
+    #item-skills {
+        line-height: 1.5 !important;
+        padding: 12px 14px !important;
+        height: 80px !important;
+    }
+
+    .reflection-grid {
+        grid-template-columns: 1fr;
+    }
+
+    #Reflection.nested-card {
+        padding: 16px;
+    }
+
+    /* ปุ่มด้านล่าง */
+    .parent-box {
+        flex-wrap: wrap;
+        gap: 12px;
+        align-items: center;
+    }
+
+    .parent-box #submit {
+        flex: 1 1 auto;
+    }
+
+    /* หน้า Showcase */
+    .profile-summary-top {
+        flex-wrap: wrap;
+    }
+
+    .profile-summary-details {
+        grid-template-columns: 1fr;
+        gap: 1rem;
+    }
+
+    .portfolio-item-card .btn-evidence {
+        width: 100%;
+        justify-content: center;
+    }
 }
