@@ -64,19 +64,20 @@
                         <div class="input_group_item_1">
                             <label>FULL NAME / DISPLAY NAME *</label><br>
                             <input class="input_text" type="text" placeholder="e.g Aliex Rivera or Somchai Jaidee"
-                                style="height: 30px; margin-top: 10px;" id="full-name">
+                                style="height: 30px; margin-top: 10px;" id="full-name" pattern="[A-Za-zก-๙\s]+">
                         </div>
                         <div class="input_group_item_2">
                             <label>PORTFOLIO ID TAG</label><br>
                             <input class="input_text" type="text" placeholder="portfolio_1"
-                                style="height: 20px;margin-top: 10px;" id="studen_id">
+                                style="height: 20px;margin-top: 10px;" id="studen_id" pattern="[0-9]+">
                         </div>
                     </div>
 
                     <div class="input_box">
                         <label>WHAT I ENJOY (ชอบทำอะไร)</label>
                         <textarea class="input_text"
-                            placeholder="Building web apps, solving algorithmic puzzles, playing games" id="enjoy"></textarea>
+                            placeholder="Building web apps, solving algorithmic puzzles, playing games"
+                            id="enjoy"></textarea>
                     </div>
 
                     <div class="input_box">
@@ -98,7 +99,7 @@
             </div>
 
             <!-- ==================== PAGE 2 ==================== -->
-            <div class="card_content_page_2" >
+            <div class="card_content_page_2">
                 <div class="title">
                     <h3>
                         <ion-icon name="folder" style="color: rgb(242, 132, 59);"></ion-icon>
@@ -113,16 +114,18 @@
                     <div class="input-group-2">
                         <div class="input_group_item_1">
                             <label>TITLE (ชื่อผลงาน) *</label><br>
-                            <input id="item-title" class="input_text" type="text" placeholder="e.g Personal Portfolio Website"
-                                style="height: 30px; color: rgb(155, 155, 155); margin-top: 5px;">
+                            <input id="item-title" class="input_text" type="text"
+                                placeholder="e.g Personal Portfolio Website" style="height: 30px; margin-top: 5px;">
                         </div>
                         <div class="input_group_item_2">
                             <label for="item-type">TYPE (ประเภท) *</label>
                             <select id="item-type" name="item-type" style="width: 100%; height: 100%;">
                                 <option value="" disabled selected>-- Select --</option>
-                                <option value="1">1</option>
-                                <option value="2">2</option>
-                                <option value="3">3</option>
+                                <option value="1">Course Assignment</option>
+                                <option value="2">Personal Project</option>
+                                <option value="3">Hackathon / Contest</option>
+                                <option value="4">Workshop / Training</option>
+                                <option value="5">Extracurricular</option>
                             </select>
                         </div>
                     </div>
@@ -130,16 +133,15 @@
                     <div class="input-group-2" style="grid-template-columns: 1fr 2fr;">
                         <div class="input_group_item_1">
                             <label>DATE *</label><br>
-                            <input id="item-date" class="input_text" type="date"
-                                style="height: 30px; color: rgb(155, 155, 155); margin-top: 5px;">
+                            <input id="item-date" class="input_text" type="date" style="height: 30px; margin-top: 5px;">
                         </div>
                         <div class="input_group_item_2">
                             <label>ROLE (บทบาท) *</label><br>
                             <input id="item-role" class="input_text" type="text" placeholder="portfolio_1"
-                                style="height: 20px; color: rgb(155, 155, 155); margin-top: 5px;">
+                                style="height: 20px;margin-top: 5px;">
                         </div>
                     </div>
-                     
+
                     <div class="input_box">
                         <label>DESCRIPTION (รายละเอียด) *</label>
                         <textarea id="item-description" class="input_text" style="height: 80px;"
@@ -163,35 +165,40 @@
                     <div class="reflection-grid">
                         <div class="reflection-item">
                             <label>What I Did (ทำอะไรไปบ้าง) *</label>
-                            <input class="reflection-input" id="item_did" type="text" placeholder="e.g. Created mockups & wrote code">
+                            <input class="reflection-input" id="item_did" type="text"
+                                placeholder="e.g. Created mockups & wrote code">
                         </div>
                         <div class="reflection-item">
                             <label>What I Learned (ได้เรียนรู้อะไร) *</label>
-                            <input class="reflection-input" id="item_learned" type="text" placeholder="e.g. Learned localStorage & DOM manipulation">
+                            <input class="reflection-input" id="item_learned" type="text"
+                                placeholder="e.g. Learned localStorage & DOM manipulation">
                         </div>
                         <div class="reflection-item">
                             <label>Challenge (อุปสรรค/ความท้าทาย) *</label>
-                            <input class="reflection-input" id="item_challenge" type="text" placeholder="e.g. Handling state between multiple users">
+                            <input class="reflection-input" id="item_challenge" type="text"
+                                placeholder="e.g. Handling state between multiple users">
                         </div>
                         <div class="reflection-item">
                             <label>Next Step (ขั้นตอนถัดไป) *</label>
-                            <input class="reflection-input" id="item_next" type="text" placeholder="e.g. Connect to real backend API">
+                            <input class="reflection-input" id="item_next" type="text"
+                                placeholder="e.g. Connect to real backend API">
                         </div>
                     </div>
                 </div>
                 <div class="input-box">
                     <label for="url">EVIDENCE (ลิงก์หลักฐาน)*</label><br>
-                    <input type="url" name="" id="input-url" placeholder="https://github.com/username/project or https://example.com">
+                    <input type="url" name="" id="input-url"
+                        placeholder="https://github.com/username/project or https://example.com" pattern="https?://.+">
                 </div>
 
-        
+
                 <div class="parent-box">
                     <a class="back_page" onclick="updateStep(1)">
-                        <ion-icon name="arrow-back-circle"
-                            style="color: rgb(145, 145, 145);font-size: 30px;cursor: pointer;"></ion-icon>
-                            Back
+                        <ion-icon name="arrow-back-circle" style="font-size: 30px;cursor: pointer;"></ion-icon>
+                        Back
                     </a>
-                    <button id="submit" onclick="updateStep(3); additem();">Save Profile & Continue</button>
+                    <button id="submit" onclick="additem(),check();"><ion-icon name="add-outline"></ion-icon> Add Item
+                        To Portfolio</button>
                 </div>
                 <!-- Added Items for Current Portfolio -->
                 <div class="mt-4 pt-4 border-top border-light-subtle">
@@ -200,9 +207,12 @@
                         <span id="item-Count" class="badge rounded-pill bg-light text-secondary ms-auto">0 Items</span>
                     </div>
 
-                      <div id="item-List">
+                    <div id="item-List">
                         <div class="empty-state"> ยังไม่มีรายการผลงานใน Portfolio นี้ กดเพิ่มผลงานด้านบนได้เลย </div>
                     </div>
+                </div>
+                <div class="parent-box">
+                    <button id="submit" onclick="updateStep(3)">Save Profile & Continue</button>
                 </div>
             </div>
 
@@ -223,22 +233,22 @@
                     <div class="profile-summary-top">
                         <div>
                             <span class="profile-eyebrow">LEARNING PORTFOLIO</span>
-                            <h4>Somchai Developer</h4>
+                            <h4 id="show_name">My profile</h4>
                         </div>
                         <span class="validated-badge"><i class="fa-solid fa-circle-check"></i> Validated</span>
                     </div>
                     <div class="profile-summary-details">
                         <div class="profile-detail">
                             <span>What I Enjoy</span>
-                            <p>Building web apps, solving algorithmic puzzles, and playing games.</p>
+                            <p id="show_enjoy">Building web apps, solving algorithmic puzzles, and playing games.</p>
                         </div>
                         <div class="profile-detail">
                             <span>What I've Tried</span>
-                            <p>HTML, CSS, JavaScript, Git, and building responsive websites.</p>
+                            <p id="show_tired">HTML, CSS, JavaScript, Git, and building responsive websites.</p>
                         </div>
                         <div class="profile-detail">
                             <span>What I'm Curious About</span>
-                            <p>React, Node.js, and cloud computing.</p>
+                            <p id="show_curious">React, Node.js, and cloud computing.</p>
                         </div>
                     </div>
                 </section>
@@ -259,14 +269,16 @@
                                 <span class="item-tag-id">item001</span>
                                 <span class="item-meta-text ms-2">Course Assignment • 2026-10-18</span>
                                 <h5 class="item-card-title mt-2 mb-1">My First Website</h5>
-                                <p class="item-role-text mb-0"><i class="fa-solid fa-user-gear me-1"></i>Role: Developer</p>
+                                <p class="item-role-text mb-0"><i class="fa-solid fa-user-gear me-1"></i>Role: Developer
+                                </p>
                             </div>
                             <a href="https://example.com/my-work" target="_blank" class="btn-evidence">
                                 <i class="fa-solid fa-arrow-up-right-from-square me-1"></i> View Work
                             </a>
                         </div>
                         <p class="item-card-desc mb-2">
-                            Created a personal website to showcase academic projects and learning journey with responsive web design.
+                            Created a personal website to showcase academic projects and learning journey with
+                            responsive web design.
                         </p>
                         <div class="item-skills-wrapper d-flex flex-wrap gap-2">
                             <span class="portfolio-skill-pill">HTML</span>
@@ -282,14 +294,16 @@
                                 <span class="item-tag-id">item002</span>
                                 <span class="item-meta-text ms-2">Personal Project • 2026-10-25</span>
                                 <h5 class="item-card-title mt-2 mb-1">Interactive Task Manager</h5>
-                                <p class="item-role-text mb-0"><i class="fa-solid fa-user-gear me-1"></i>Role: Frontend Developer</p>
+                                <p class="item-role-text mb-0"><i class="fa-solid fa-user-gear me-1"></i>Role: Frontend
+                                    Developer</p>
                             </div>
                             <a href="https://github.com" target="_blank" class="btn-evidence">
                                 <i class="fa-solid fa-arrow-up-right-from-square me-1"></i> GitHub Repo
                             </a>
                         </div>
                         <p class="item-card-desc mb-2">
-                            Built an interactive task dashboard featuring localStorage data persistence and dynamic DOM updates.
+                            Built an interactive task dashboard featuring localStorage data persistence and dynamic DOM
+                            updates.
                         </p>
                         <div class="item-skills-wrapper d-flex flex-wrap gap-2">
                             <span class="portfolio-skill-pill">Bootstrap</span>
@@ -301,7 +315,7 @@
 
                 <div class="parent-box">
                     <a class="back_page" onclick="updateStep(2)">
-                            <ion-icon name="add-outline"></ion-icon>  Add More Items
+                        <ion-icon name="add-outline"></ion-icon> Add More Items
                     </a>
                     <button id="submit" onclick="updateStep(3)">Save Profile & Continue</button>
                 </div>

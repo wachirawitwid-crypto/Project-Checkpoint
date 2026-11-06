@@ -15,16 +15,17 @@ bar.classList.add('start');
 
 function updateStep(newStep) {
     // ถ้าผู้ใช้กำลังจะเดินหน้าไปสเต็ป 2 ให้ทำการตรวจเช็กข้อมูลก่อน
+    updateProfilePreview();
     if (newStep === 2 && currentStep < 2) {
         if (!check(2)) {
             return; // ถ้าข้อมูลไม่ครบ ให้หยุดการทำงานทันที (ไม่เปลี่ยนหน้า)
         }
-    } else if (newStep === 3 && currentStep < 3) {
+    }
+    if (newStep === 3 && currentStep < 3) {
         if (!check(3)) {
             return; // ถ้าข้อมูลไม่ครบ ให้หยุดการทำงานทันที (ไม่เปลี่ยนหน้า)
         }
     }
-
     // ล้างคลาสแอนิเมชันเก่าทั้งหมดออกก่อน
     bar.classList.remove('step2', 'step3', 'back-to-step2', 'back-to-step1', 'start');
 
@@ -161,16 +162,16 @@ function check(newStep) {
         return true; // ผ่านทุกเงื่อนไข
     } else if (newStep === 3) {
         const inputs_page2 = {
-            title : document.getElementById('item-title'),
-            type : document.getElementById('item-type'),
-            date : document.getElementById('item-date'),
+            title: document.getElementById('item-title'),
+            type: document.getElementById('item-type'),
+            date: document.getElementById('item-date'),
             role: document.getElementById('item-role'),
-            description : document.getElementById('item-description'),
+            description: document.getElementById('item-description'),
             skills: document.getElementById('item-skills'),
             what_i_did: document.getElementById('item_did'),
-            what_i_learned : document.getElementById('item_learned'),
-            challenge : document.getElementById('item_challenge'),
-            next_step : document.getElementById('item_next')
+            what_i_learned: document.getElementById('item_learned'),
+            challenge: document.getElementById('item_challenge'),
+            next_step: document.getElementById('item_next')
         };
 
         if (inputs_page2.title && !inputs_page2.title.value.trim()) {
@@ -179,13 +180,13 @@ function check(newStep) {
             return false;
         }
 
-        if (inputs_page2.type && !inputs_page2.type.value.trim()) {
+        if (inputs_page2.type && !inputs_page2.type.value) {
             alert('กรุณากรอก ITEM TYPE ด้วยครับ');
             inputs_page2.type.focus();
             return false;
         }
 
-        if (inputs_page2.date && !inputs_page2.date.value.trim()) {
+        if (inputs_page2.date && !inputs_page2.date.value) {
             alert('กรุณากรอก ITEM DATE ด้วยครับ');
             inputs_page2.date.focus();
             return false;
@@ -196,14 +197,13 @@ function check(newStep) {
             inputs_page2.role.focus();
             return false;
         }
-        
+
         // หมายเหตุ: หากต้องการบังคับกรอกฟิลด์อื่นๆ ของหน้า 2 เพิ่มเติม (เช่น description, skills ฯลฯ) 
         // สามารถเพิ่มเงื่อนไข if เช็กในลักษณะเดียวกันตรงนี้ได้เลยครับ
 
         console.log(inputs_page2);
         return true; // ผ่านทุกเงื่อนไข
     }
-    
     return true;
 }
 
@@ -217,33 +217,39 @@ function updateItem() {
         itemList.innerHTML = '<div class="empty-state"> ยังไม่มีรายการผลงานใน Portfolio นี้ กดเพิ่มผลงานด้านบนได้เลย </div>';
         return;
     }
-    itemList.innerHTML = items.map(item => `
+
+    itemList.innerHTML = items.map((item, index) => `
         <div class="item-box item-card d-flex align-items-start justify-content-between mb-3">  
             <div>
-                <span class="item-id">${item.id}</span>
+                <span class="item-id">Item-${index + 1}</span>
                 <span class="text-muted"> ${item.type} | ${item.date}</span>
                 <h3 class="h6 fw-semibold mb-0">${item.title}</h3>
-                <p class="text-muted mb-0"><strong>${item.description}</strong></p>
+                <p class="text-muted mb-0"><strong>Role:${item.description}</strong></p>
             </div>
-            <button type="button" class="btn btn-sm btn-outline-danger remove-btn flex-shrink-0" onclick="removeItem('${item.id}')">Remove</button>
+            <!-- ส่งค่า index ไปใช้ลบ -->
+            <a class="remove_Item" onclick="removeItem(${index})"><ion-icon name="trash-bin"></ion-icon></a>
         </div>
     `).join("");
 }
 
 let itemIdCounter = 1;
 function additem() {
+    if (!check(3)) {
+        count = 0;
+        return;
+    }
+    count = 1;
     const title = document.getElementById("item-title").value.trim();
     const type = document.getElementById("item-type").value;
     const date = document.getElementById("item-date").value;
     const description = document.getElementById("item-description").value.trim();
     const skills = document.getElementById("item-skills").value.trim();
 
-    if (title && type && date && description && skills) {
-        items.push({
-            id: `Item-${itemIdCounter++}`, title, type, date, description, skills
-        });
-        updateItem();
-    }
+    items.push({
+        title, type, date, description, skills
+    });
+
+    updateItem();
 }
 
 function removeItem(id) {
@@ -251,3 +257,35 @@ function removeItem(id) {
     updateItem();
 }
 updateItem();
+
+//page 3 show
+
+function updateProfilePreview() {
+    const userData = {
+        fullName: document.getElementById('full-name').value.trim(),
+        enjoy: document.getElementById('enjoy').value.trim(),
+        tried: document.getElementById('tried').value.trim(),
+        curious: document.getElementById('curious-about').value.trim()
+    };
+
+    // 2. ดึง Element ที่จะเอาไว้แสดงผล (เช่น id="show_name")
+    const userShow = {
+        showNameElement: document.getElementById('show_name'),
+        showEnjoyElement: document.getElementById('show_enjoy'),
+        showeTiredElement: document.getElementById('show_tired'),
+        showeCuriousElement: document.getElementById('show_curious')
+    }
+    // 3. นำค่าใน userData ไปแสดงผล
+    if (userShow.showNameElement) {
+        userShow.showNameElement.textContent = userData.fullName || "My profile";
+    }
+    if (userShow.showEnjoyElement) {
+        userShow.showEnjoyElement.textContent = userData.enjoy || "-";
+    }
+    if (userShow.showeTiredElement) {
+        userShow.showeTiredElement.textContent = userData.tried || "-";
+    }
+    if (userShow.showeCuriousElement) {
+        userShow.showeCuriousElement.textContent = userData.curious || "-";
+    }
+}
