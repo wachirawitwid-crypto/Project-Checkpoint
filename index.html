@@ -68,8 +68,9 @@
                         </div>
                         <div class="input_group_item_2">
                             <label>PORTFOLIO ID TAG</label><br>
-                            <input class="input_text" type="text" placeholder="portfolio_1"
-                                style="height: 20px;margin-top: 10px;" id="studen_id" pattern="[0-9]+">
+                            <input class="input_text" type="text" placeholder="1234567890"
+                                style="height: 20px;margin-top: 10px;" id="studen_id" maxlength="10"
+                                inputmode="numeric">
                         </div>
                     </div>
 
@@ -125,7 +126,7 @@
                                 <option value="Personal Project">Personal Project</option>
                                 <option value="Hackathon / Contest">Hackathon / Contest</option>
                                 <option value="Workshop / Training">Workshop / Training</option>
-                                <option value="5">Extracurricular</option>
+                                <option value="Extracurricular">Extracurricular</option>
                             </select>
                         </div>
                     </div>
@@ -137,7 +138,7 @@
                         </div>
                         <div class="input_group_item_2">
                             <label>ROLE (บทบาท) *</label><br>
-                            <input id="item-role" class="input_text" type="text" placeholder="portfolio_1"
+                            <input id="item-role" class="input_text" type="text" placeholder="e.g Frontend Developer"
                                 style="height: 20px;margin-top: 5px;">
                         </div>
                     </div>
@@ -145,14 +146,14 @@
                     <div class="input_box">
                         <label>DESCRIPTION (รายละเอียด) *</label>
                         <textarea id="item-description" class="input_text" style="height: 80px;"
-                            placeholder="React.js, Node.js, Cloud Computing with AWS"></textarea>
+                            placeholder="Brief explanation of the project or work.."></textarea>
                     </div>
 
                     <div class="input_box">
                         <label>SKILLS (แยกด้วยเครื่องหมายจุลภาค) *</label>
                         <textarea id="item-skills" class="input_text"
                             style="height: 50px; display: flex; align-items: center; padding: 0 20px; line-height: 50px;"
-                            placeholder="React.js, Node.js, Cloud Computing with AWS"></textarea>
+                            placeholder="e.g HTML,CSS,JavaScipt,Bootstrap"></textarea>
                     </div>
                 </div>
 
@@ -187,8 +188,7 @@
                 </div>
                 <div class="input-box">
                     <label for="url">EVIDENCE (ลิงก์หลักฐาน)*</label><br>
-                    <input type="url" name="" id="input-url"
-                        placeholder="https://github.com/username/project or https://example.com" pattern="https?://.+">
+                    <input type="url" name="" id="input-url" placeholder="https://..." pattern="https?://.+">
                 </div>
 
 
@@ -197,8 +197,8 @@
                         <ion-icon name="arrow-back-circle" style="font-size: 30px;cursor: pointer;"></ion-icon>
                         Back
                     </a>
-                    <button id="submit" onclick="additem(),check();"><ion-icon name="add-outline"></ion-icon> Add Item
-                        To Portfolio</button>
+                    <button id="submit" class="submit-btn" onclick="additem()"><ion-icon name="add-outline"></ion-icon>
+                        Add Item To Portfolio</button>
                 </div>
                 <!-- Added Items for Current Portfolio -->
                 <div class="mt-4 pt-4 border-top border-light-subtle">
@@ -266,32 +266,6 @@
                     <div id="content-List">
                         <div class="empty-state"> ยังไม่มีรายการผลงานใน Portfolio นี้ กดเพิ่มผลงานด้านบนได้เลย </div>
                     </div>
-
-                    <!-- Item 2
-                    <div class="portfolio-item-card mb-3 p-3">
-                        <div class="d-flex justify-content-between align-items-start flex-wrap gap-2 mb-2">
-                            <div>
-                                <span class="item-tag-id">item002</span>
-                                <span class="item-meta-text ms-2">Personal Project • 2026-10-25</span>
-                                <h5 class="item-card-title mt-2 mb-1">Interactive Task Manager</h5>
-                                <p class="item-role-text mb-0"><i class="fa-solid fa-user-gear me-1"></i>Role: Frontend
-                                    Developer</p>
-                            </div>
-                            <a href="https://github.com" target="_blank" class="btn-evidence">
-                                <i class="fa-solid fa-arrow-up-right-from-square me-1"></i> GitHub Repo
-                            </a>
-                        </div>
-                        <p class="item-card-desc mb-2">
-                            Built an interactive task dashboard featuring localStorage data persistence and dynamic DOM
-                            updates.
-                        </p>
-                        <div class="item-skills-wrapper d-flex flex-wrap gap-2">
-                            <span class="portfolio-skill-pill">Bootstrap</span>
-                            <span class="portfolio-skill-pill">LocalStorage</span>
-                            <span class="portfolio-skill-pill">JSON</span>
-                        </div>
-                    </div>
-                    !-->
                 </div>
 
                 <div class="parent-box">
