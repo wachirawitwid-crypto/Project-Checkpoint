@@ -232,24 +232,74 @@ function updateItem() {
     `).join("");
 }
 
-let itemIdCounter = 1;
+// ประกาศตัวแปรเชื่อมโยง DOM สำหรับหน้าแสดงผล (หน้า 3)
+const Contentcount = document.getElementById("content-Count");
+const ContentList = document.getElementById("content-List");
+let content = [];
+let ContentIdCounter = 1;
+// ฟังก์ชัน Add Item ที่แก้ไขให้ถูกต้องและปลอดภัยจาก Error แล้ว
 function additem() {
     if (!check(3)) {
-        count = 0;
         return;
     }
-    count = 1;
+
+    // 1. ดึงค่าจากฟอร์มพื้นฐาน
     const title = document.getElementById("item-title").value.trim();
     const type = document.getElementById("item-type").value;
     const date = document.getElementById("item-date").value;
     const description = document.getElementById("item-description").value.trim();
     const skills = document.getElementById("item-skills").value.trim();
 
+    // 2. ดึงค่าฟิลด์เสริมอื่นๆ (ป้องกัน Error กรณีที่ Element นั้นไม่มีอยู่จริง)
+    const roleInput = document.getElementById("item-role");
+    const role = roleInput ? roleInput.value.trim() : "";
+
+    const what_i_did = document.getElementById("item_did") ? document.getElementById("item_did").value.trim() : "";
+    const what_i_learned = document.getElementById("item_learned") ? document.getElementById("item_learned").value.trim() : "";
+    const challenge = document.getElementById("item_challenge") ? document.getElementById("item_challenge").value.trim() : "";
+    const next_step = document.getElementById("item_next") ? document.getElementById("item_next").value.trim() : "";
+
+    // ดึงค่าลิงก์หลักฐาน (ถ้ามีช่อง input id="item-link")
+    const linkInput = document.getElementById("item-link");
+    const link = linkInput ? linkInput.value.trim() : "";
+
+    const newItemId = `Item-${ContentIdCounter++}`;
+    // 3. บันทึกลง items (สำหรับแสดงผลรายการย่อ)
     items.push({
-        title, type, date, description, skills
+        id: newItemId,
+        title, type, date, description, skills, role
     });
 
+    // 4. บันทึกลง content (สำหรับแสดงผลการ์ดพรีวิวเต็มรูปแบบในหน้าสุดท้าย)
+    content.push({
+        id: `Item-${ContentIdCounter++}`,
+        title,
+        type,
+        date,
+        description,
+        skills,
+        role,
+        what_i_did,
+        what_i_learned,
+        challenge,
+        next_step,
+        link
+    });
+
+    // 5. อัปเดตการแสดงผลทั้งสองส่วน
     updateItem();
+    updateContent();
+
+    // (ทางเลือก) เคลียร์ฟอร์มหลังจากกดเพิ่มสำเร็จ
+    document.getElementById("item-title").value = '';
+    document.getElementById("item-description").value = '';
+    if (roleInput) roleInput.value = '';
+    if (document.getElementById("item-skills")) document.getElementById("item-skills").value = '';
+    if (document.getElementById("item_did")) document.getElementById("item_did").value = '';
+    if (document.getElementById("item_learned")) document.getElementById("item_learned").value = '';
+    if (document.getElementById("item_challenge")) document.getElementById("item_challenge").value = '';
+    if (document.getElementById("item_next")) document.getElementById("item_next").value = '';
+    if (linkInput) linkInput.value = '';
 }
 
 function removeItem(id) {
@@ -258,19 +308,20 @@ function removeItem(id) {
 }
 updateItem();
 
-//page 3 show
+//page 3 
 
 function updateProfilePreview() {
     const userData = {
         fullName: document.getElementById('full-name').value.trim(),
+        id: document.getElementById('studen_id').value.trim(),
         enjoy: document.getElementById('enjoy').value.trim(),
         tried: document.getElementById('tried').value.trim(),
         curious: document.getElementById('curious-about').value.trim()
     };
 
-    // 2. ดึง Element ที่จะเอาไว้แสดงผล (เช่น id="show_name")
     const userShow = {
         showNameElement: document.getElementById('show_name'),
+        showIdElement: document.getElementById('id_profile'),
         showEnjoyElement: document.getElementById('show_enjoy'),
         showeTiredElement: document.getElementById('show_tired'),
         showeCuriousElement: document.getElementById('show_curious')
@@ -288,4 +339,38 @@ function updateProfilePreview() {
     if (userShow.showeCuriousElement) {
         userShow.showeCuriousElement.textContent = userData.curious || "-";
     }
+    if (userShow.showIdElement) {
+        userShow.showIdElement.textContent = "Id: " + userData.id;
+    }
+}
+function updateContent() {
+    // 1. นับจำนวน item และแสดงผลที่ตัวนับ
+    Contentcount.textContent = content.length + (content.length <= 1 ? " item" : " items");
+
+    // 2. ถ้ายังไม่มีข้อมูล ให้แสดงข้อความแจ้งเตือนสถานะว่าง
+    if (content.length === 0) {
+        ContentList.innerHTML = '<div class="empty-state"> ยังไม่มีรายการผลงานใน Portfolio นี้ กดเพิ่มผลงานด้านบนได้เลย </div>';
+        return;
+    }
+
+    // 3. วนลูปแสดงข้อมูลจริงที่ผู้ใช้ Add เข้ามา พร้อมแสดงส่วน Reflection ครบถ้วน
+    ContentList.innerHTML = content.map((item, index) => `
+        <div class="portfolio-item-card mb-3 p-3">
+            <div class="d-flex justify-content-between align-items-start flex-wrap gap-2 mb-2">
+                <div>
+                    <span class="item-tag-id badge" id = "badge">${item.id || `Item-${index + 1}`}</span>
+                    <span class="item-meta-text text-muted ms-2">${item.type || '-'} | <i class="fa-regular fa-calendar"></i> ${item.date || '-'}</span>
+                    <h5 class="item-card-title mt-2 mb-1 fw-bold">${item.title}</h5>
+                    <p class="item-role-text text-muted mb-0"><i class="fa-solid fa-user-gear me-1"></i>Role: ${item.role || item.description || '-'}</p>
+                </div>
+                <a href="${item.link || '#'}" target="_blank" class="btn-evidence">
+                    <i class="fa-solid fa-arrow-up-right-from-square me-1"></i> View Evidence
+                </a>
+            </div>
+            <p class="item-card-desc mb-2">
+                ${item.description || '-'}
+            </p>
+        </div>
+    `).join("");
+
 }

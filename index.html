@@ -121,10 +121,10 @@
                             <label for="item-type">TYPE (ประเภท) *</label>
                             <select id="item-type" name="item-type" style="width: 100%; height: 100%;">
                                 <option value="" disabled selected>-- Select --</option>
-                                <option value="1">Course Assignment</option>
-                                <option value="2">Personal Project</option>
-                                <option value="3">Hackathon / Contest</option>
-                                <option value="4">Workshop / Training</option>
+                                <option value="Course Assignment">Course Assignment</option>
+                                <option value="Personal Project">Personal Project</option>
+                                <option value="Hackathon / Contest">Hackathon / Contest</option>
+                                <option value="Workshop / Training">Workshop / Training</option>
                                 <option value="5">Extracurricular</option>
                             </select>
                         </div>
@@ -232,7 +232,7 @@
                 <section class="profile-summary-card" aria-label="Portfolio profile summary">
                     <div class="profile-summary-top">
                         <div>
-                            <span class="profile-eyebrow">LEARNING PORTFOLIO</span>
+                            <span class="profile-eyebrow" id="id_profile">Id:</span>
                             <h4 id="show_name">My profile</h4>
                         </div>
                         <span class="validated-badge"><i class="fa-solid fa-circle-check"></i> Validated</span>
@@ -259,35 +259,15 @@
                             <ion-icon name="folder-open" style="color: rgb(242, 132, 59); font-size: 22px;"></ion-icon>
                             <h4 class="h6 fw-bold mb-0" style="color: #1e293b; font-size: 16px;">Portfolio Items</h4>
                         </div>
-                        <span class="badge rounded-pill bg-light text-secondary border px-3 py-2">2 Items</span>
+                        <span class="badge rounded-pill bg-light text-secondary border px-3 py-2" id="content-Count">0
+                            Items</span>
                     </div>
 
-                    <!-- Item 1 -->
-                    <div class="portfolio-item-card mb-3 p-3">
-                        <div class="d-flex justify-content-between align-items-start flex-wrap gap-2 mb-2">
-                            <div>
-                                <span class="item-tag-id">item001</span>
-                                <span class="item-meta-text ms-2">Course Assignment • 2026-10-18</span>
-                                <h5 class="item-card-title mt-2 mb-1">My First Website</h5>
-                                <p class="item-role-text mb-0"><i class="fa-solid fa-user-gear me-1"></i>Role: Developer
-                                </p>
-                            </div>
-                            <a href="https://example.com/my-work" target="_blank" class="btn-evidence">
-                                <i class="fa-solid fa-arrow-up-right-from-square me-1"></i> View Work
-                            </a>
-                        </div>
-                        <p class="item-card-desc mb-2">
-                            Created a personal website to showcase academic projects and learning journey with
-                            responsive web design.
-                        </p>
-                        <div class="item-skills-wrapper d-flex flex-wrap gap-2">
-                            <span class="portfolio-skill-pill">HTML</span>
-                            <span class="portfolio-skill-pill">CSS</span>
-                            <span class="portfolio-skill-pill">JavaScript</span>
-                        </div>
+                    <div id="content-List">
+                        <div class="empty-state"> ยังไม่มีรายการผลงานใน Portfolio นี้ กดเพิ่มผลงานด้านบนได้เลย </div>
                     </div>
 
-                    <!-- Item 2 -->
+                    <!-- Item 2
                     <div class="portfolio-item-card mb-3 p-3">
                         <div class="d-flex justify-content-between align-items-start flex-wrap gap-2 mb-2">
                             <div>
@@ -311,6 +291,7 @@
                             <span class="portfolio-skill-pill">JSON</span>
                         </div>
                     </div>
+                    !-->
                 </div>
 
                 <div class="parent-box">
