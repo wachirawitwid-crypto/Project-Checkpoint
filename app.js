@@ -13,7 +13,16 @@ let currentStep = 1;
 bar.className = "bar";
 bar.classList.add('start');
 
-//เช็คว่าPORTFOLIO ID เป็นตัวเลขไหม
+// ================= ข้อมูลหลัก =================
+const itemcount = document.getElementById("item-Count");
+const itemList = document.getElementById("item-List");
+const Contentcount = document.getElementById("content-Count");
+const ContentList = document.getElementById("content-List");
+let items = [];
+let content = [];
+let ContentIdCounter = 1;
+
+// PORTFOLIO ID: เฉพาะตัวเลข ไม่เกิน 10 หลัก
 const idInput = document.getElementById('studen_id');
 if (idInput) {
     idInput.addEventListener('input', function () {
@@ -22,11 +31,9 @@ if (idInput) {
 }
 
 function updateStep(newStep) {
-    // ถ้าผู้ใช้กำลังจะเดินหน้าไปสเต็ป 2 ให้ทำการตรวจเช็กข้อมูลก่อน
-    updateProfilePreview();
     if (newStep === 2 && currentStep < 2) {
         if (!check(2)) {
-            return; // ถ้าข้อมูลไม่ครบ ให้หยุดการทำงานทันที (ไม่เปลี่ยนหน้า)
+            return;
         }
     }
     if (newStep === 3 && currentStep < 3) {
@@ -39,7 +46,6 @@ function updateStep(newStep) {
     bar.classList.remove('step2', 'step3', 'back-to-step2', 'back-to-step1', 'start');
 
     if (newStep === 1) {
-        // ถอยกลับมาสเต็ป 1
         bar.className = "bar";
         bar.classList.add('back-to-step1');
 
@@ -102,6 +108,7 @@ function updateStep(newStep) {
         bar_2.className = "complete";
         bar_3.className = "activate";
     }
+
     updateProfilePreview();
     currentStep = newStep;
 }
@@ -117,7 +124,6 @@ if (bar_1) {
 if (bar_2) {
     bar_2.addEventListener("click", function (e) {
         e.preventDefault();
-        // ถ้าจะคลิกข้ามไปหน้า 2 โดยตรง ก็จะเช็กข้อมูลหน้า 1 ก่อนเช่นกัน
         if (currentStep === 1 && !check(2)) return;
         updateStep(2);
     });
@@ -161,26 +167,18 @@ function check(newStep) {
             inputs.tried.focus();
             return false;
         }
-
         if (inputs.curious && !inputs.curious.value.trim()) {
             alert('กรุณากรอก WHAT I\'M CURIOUS ABOUT ด้วยครับ');
             inputs.curious.focus();
             return false;
         }
-        console.log(inputs);
-        return true; // ผ่านทุกเงื่อนไข
+        return true;
     } else if (newStep === 3) {
         const inputs_page2 = {
             title: document.getElementById('item-title'),
             type: document.getElementById('item-type'),
             date: document.getElementById('item-date'),
-            role: document.getElementById('item-role'),
-            description: document.getElementById('item-description'),
-            skills: document.getElementById('item-skills'),
-            what_i_did: document.getElementById('item_did'),
-            what_i_learned: document.getElementById('item_learned'),
-            challenge: document.getElementById('item_challenge'),
-            next_step: document.getElementById('item_next')
+            role: document.getElementById('item-role')
         };
 
         if (inputs_page2.title && !inputs_page2.title.value.trim()) {
@@ -188,19 +186,16 @@ function check(newStep) {
             inputs_page2.title.focus();
             return false;
         }
-
         if (inputs_page2.type && !inputs_page2.type.value) {
             alert('กรุณากรอก ITEM TYPE ด้วยครับ');
             inputs_page2.type.focus();
             return false;
         }
-
         if (inputs_page2.date && !inputs_page2.date.value) {
             alert('กรุณากรอก ITEM DATE ด้วยครับ');
             inputs_page2.date.focus();
             return false;
         }
-
         if (inputs_page2.role && !inputs_page2.role.value.trim()) {
             alert('กรุณากรอก ITEM ROLE ด้วยครับ');
             inputs_page2.role.focus();
@@ -212,46 +207,32 @@ function check(newStep) {
             urlInput.focus();
             return false;
         }
-
-        // หมายเหตุ: หากต้องการบังคับกรอกฟิลด์อื่นๆ ของหน้า 2 เพิ่มเติม (เช่น description, skills ฯลฯ) 
-        // สามารถเพิ่มเงื่อนไข if เช็กในลักษณะเดียวกันตรงนี้ได้เลยครับ
-        console.log(inputs_page2);
-        return true; // ผ่านทุกเงื่อนไข
+        return true;
     }
     return true;
 }
 
-//เกี่ยวกับ add item
-const itemcount = document.getElementById("item-Count");
-const itemList = document.getElementById("item-List");
-let items = [];
+// ================= หน้า 2: รายการที่เพิ่ม =================
 function updateItem() {
-    itemcount.textContent = items.length + " items";
+    itemcount.textContent = items.length + (items.length <= 1 ? " item" : " items");
     if (items.length === 0) {
         itemList.innerHTML = '<div class="empty-state"> ยังไม่มีรายการผลงานใน Portfolio นี้ กดเพิ่มผลงานด้านบนได้เลย </div>';
         return;
     }
 
-    itemList.innerHTML = items.map((item, index) => `
-        <div class="item-box item-card d-flex align-items-start justify-content-between mb-3">  
+    itemList.innerHTML = items.map(item => `
+        <div class="item-box item-card d-flex align-items-start justify-content-between mb-3">
             <div>
                 <span class="item-id">${item.id}</span>
                 <span class="text-muted"> ${item.type} | ${item.date}</span>
                 <h3 class="h6 fw-semibold mb-0">${item.title}</h3>
-                <p class="text-muted mb-0"><strong>Role:${item.description}</strong></p>
+                <p class="text-muted mb-0"><strong>Role: ${item.role}</strong></p>
             </div>
-            <!-- ส่งค่า index ไปใช้ลบ -->
             <a class="remove_Item" onclick="removeItem('${item.id}')"><ion-icon name="trash-bin"></ion-icon></a>
         </div>
     `).join("");
 }
 
-// ประกาศตัวแปรเชื่อมโยง DOM สำหรับหน้าแสดงผล (หน้า 3)
-const Contentcount = document.getElementById("content-Count");
-const ContentList = document.getElementById("content-List");
-let content = [];
-let ContentIdCounter = 1;
-// ฟังก์ชัน Add Item ที่แก้ไขให้ถูกต้องและปลอดภัยจาก Error แล้ว
 function additem() {
     if (!check(3)) {
         return;
@@ -287,6 +268,7 @@ function additem() {
 
     updateItem();
     updateContent();
+    saveData();
 
     // เคลียร์ฟอร์ม
     document.getElementById("item-title").value = '';
@@ -301,21 +283,14 @@ function additem() {
 }
 
 function removeItem(id) {
-    // ลบตาม id ทั้งสองลิสต์ให้ตรงกัน
     items = items.filter(item => item.id !== id);
     content = content.filter(item => item.id !== id);
     updateItem();
     updateContent();
+    saveData();
 }
 
-function removeItem(id) {
-    items = items.filter(item => item.id !== id);
-    updateItem();
-}
-updateItem();
-
-//page 3 
-
+// ================= หน้า 3: แสดงผล =================
 function updateProfilePreview() {
     const userData = {
         fullName: document.getElementById('full-name').value.trim(),
@@ -331,8 +306,8 @@ function updateProfilePreview() {
         showEnjoyElement: document.getElementById('show_enjoy'),
         showeTiredElement: document.getElementById('show_tired'),
         showeCuriousElement: document.getElementById('show_curious')
-    }
-    // 3. นำค่าใน userData ไปแสดงผล
+    };
+
     if (userShow.showNameElement) {
         userShow.showNameElement.textContent = userData.fullName || "My profile";
     }
@@ -349,25 +324,23 @@ function updateProfilePreview() {
         userShow.showIdElement.textContent = "Id: " + userData.id;
     }
 }
+
 function updateContent() {
-    // 1. นับจำนวน item และแสดงผลที่ตัวนับ
     Contentcount.textContent = content.length + (content.length <= 1 ? " item" : " items");
-    console.log(document.getElementById("item-url"));
-    // 2. ถ้ายังไม่มีข้อมูล ให้แสดงข้อความแจ้งเตือนสถานะว่าง
+
     if (content.length === 0) {
         ContentList.innerHTML = '<div class="empty-state"> ยังไม่มีรายการผลงานใน Portfolio นี้ กดเพิ่มผลงานด้านบนได้เลย </div>';
         return;
     }
 
-    // 3. วนลูปแสดงข้อมูลจริงที่ผู้ใช้ Add เข้ามา พร้อมแสดงส่วน Reflection ครบถ้วน
     ContentList.innerHTML = content.map((item, index) => `
         <div class="portfolio-item-card mb-3 p-3">
             <div class="d-flex justify-content-between align-items-start flex-wrap gap-2 mb-2">
                 <div>
-                    <span class="item-tag-id badge" id = "badge">${item.id || `Item-${index + 1}`}</span>
+                    <span class="item-tag-id badge">${item.id || `Item-${index + 1}`}</span>
                     <span class="item-meta-text text-muted ms-2">${item.type || '-'} | <i class="fa-regular fa-calendar"></i> ${item.date || '-'}</span>
                     <h5 class="item-card-title mt-2 mb-1 fw-bold">${item.title}</h5>
-                    <p class="item-role-text text-muted mb-0"><i class="fa-solid fa-user-gear me-1"></i>Role: ${item.role || item.description || '-'}</p>
+                    <p class="item-role-text text-muted mb-0"><i class="fa-solid fa-user-gear me-1"></i>Role: ${item.role || '-'}</p>
                 </div>
                 <a href="${item.link || '#'}" target="_blank" class="btn-evidence">
                     <i class="fa-solid fa-arrow-up-right-from-square me-1"></i> View Evidence
@@ -378,5 +351,63 @@ function updateContent() {
             </p>
         </div>
     `).join("");
-
 }
+
+// ================= localStorage =================
+const STORAGE_KEY = 'portfolioData';
+const profileFields = ['full-name', 'studen_id', 'enjoy', 'tried', 'curious-about'];
+
+function saveData() {
+    try {
+        const profile = {};
+        profileFields.forEach(id => {
+            profile[id] = document.getElementById(id).value;
+        });
+        localStorage.setItem(STORAGE_KEY, JSON.stringify({
+            profile,
+            items,
+            content,
+            counter: ContentIdCounter
+        }));
+    } catch (e) {
+        console.error('saveData failed:', e);
+    }
+}
+
+function loadData() {
+    try {
+        const raw = localStorage.getItem(STORAGE_KEY);
+        if (!raw) return;
+        const data = JSON.parse(raw);
+
+        profileFields.forEach(id => {
+            const el = document.getElementById(id);
+            if (el && data.profile && data.profile[id] !== undefined) {
+                el.value = data.profile[id];
+            }
+        });
+
+        items = data.items || [];
+        content = data.content || [];
+        ContentIdCounter = data.counter || items.length + 1;
+    } catch (e) {
+        console.error('loadData failed:', e);
+    }
+}
+
+function clearData() {
+    localStorage.removeItem(STORAGE_KEY);
+    location.reload();
+}
+
+// บันทึกโปรไฟล์ทุกครั้งที่พิมพ์
+profileFields.forEach(id => {
+    const el = document.getElementById(id);
+    if (el) el.addEventListener('input', saveData);
+});
+
+// โหลดข้อมูลและแสดงผลตอนเปิดหน้า
+loadData();
+updateItem();
+updateContent();
+updateProfilePreview();
