@@ -30,6 +30,74 @@
             <span class="icon_title">CS100 TEAM PROJECT</span>
             <h1>Power Up! Portfolio</h1>
 
+            <!-- Portfolio Switcher & Challenge Exchange Bar -->
+            <div class="portfolio-switcher-bar">
+                <div class="switcher-top-row">
+                    <div class="switcher-left">
+                        <span class="switcher-label">เลือก Portfolio</span>
+                        <div id="portfolio-tabs" class="portfolio-tabs"></div>
+                        <button type="button" id="btn-new-portfolio" class="portfolio-pill-new"
+                            onclick="startNewPortfolio()">+ New</button>
+                    </div>
+                    <span id="server-status" class="server-status-badge status-loading">กำลังเชื่อมต่อ Server...</span>
+                </div>
+                <div class="switcher-bottom-row">
+                    <button type="button" id="btn-toggle-exchange" class="exchange-toggle-btn"
+                        onclick="toggleExchangePanel()" aria-expanded="false">
+                        Challenge Exchange <i class="fa-solid fa-chevron-down" id="exchange-chevron"></i>
+                    </button>
+                </div>
+
+                <!-- Challenge Exchange: Import / Export JSON -->
+                <div id="challenge-exchange-panel" class="exchange-panel" hidden>
+                    <div class="exchange-grid">
+                        <div class="exchange-box">
+                            <div class="exchange-box-header">
+                                <span><i class="fa-solid fa-file-import me-1"></i> Import Portfolio Item JSON (จากบูธเพื่อน)</span>
+                                <label class="btn-exchange-file">
+                                    <i class="fa-solid fa-upload me-1"></i> เลือกไฟล์ .json
+                                    <input type="file" id="import-json-file" accept=".json,application/json" hidden>
+                                </label>
+                            </div>
+                            <textarea id="import-json-input" class="exchange-textarea"
+                                placeholder='วาง Portfolio Item JSON ที่ได้จากบูธเพื่อน เช่น {"id":"item001","title":"...","type":"Challenge","date":"2026-11-24","role":"Tester","description":"...","skills":["..."],"reflection":{"whatIDid":"...","whatILearned":"...","challenge":"...","nextStep":"..."},"evidence":["https://..."]}'></textarea>
+                            <div class="exchange-actions">
+                                <button type="button" class="btn-exchange-outline" onclick="loadImportJsonToForm()">
+                                    <i class="fa-solid fa-pen-to-square me-1"></i> นำเข้าลงฟอร์ม (เติม Reflection)
+                                </button>
+                                <button type="button" class="btn-exchange-primary" onclick="importItemToServer()">
+                                    <i class="fa-solid fa-cloud-arrow-up me-1"></i> Import &amp; Save ลง Server
+                                </button>
+                            </div>
+                            <div id="import-feedback" class="exchange-feedback" hidden></div>
+                        </div>
+
+                        <div class="exchange-box exchange-box-side">
+                            <div class="exchange-box-header">
+                                <span><i class="fa-solid fa-file-export me-1"></i> Export &amp; Group Challenge</span>
+                            </div>
+                            <p class="exchange-hint">
+                                ส่งออกไฟล์ <code>my-portfolio.json</code> จาก Server สำหรับส่งงานรายบุคคล หรือลองเล่น Challenge ของกลุ่มเรา
+                            </p>
+                            <div class="exchange-side-actions">
+                                <button type="button" class="btn-exchange-primary w-100" onclick="exportMyPortfolio()">
+                                    <i class="fa-solid fa-download me-1"></i> Export my-portfolio.json
+                                </button>
+                                <button type="button" class="btn-exchange-outline w-100" onclick="copyCurrentPortfolioJson()">
+                                    <i class="fa-regular fa-copy me-1"></i> Copy Portfolio JSON
+                                </button>
+                                <a href="https://tanawatwon-crypto.github.io/game_challenge/" target="_blank"
+                                    rel="noopener noreferrer" class="btn-exchange-game w-100">
+                                    <i class="fa-solid fa-gamepad me-1"></i> เล่น Challenge กลุ่มเรา (Mini Games)
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div id="server-offline-banner" class="server-alert" hidden></div>
+
             <!-- Progress Bar -->
             <div class="bar">
                 <!-- สเต็ปที่ 1 -->
@@ -54,7 +122,7 @@
                 <div class="title">
                     <h3>
                         <ion-icon name="bookmarks" style="color: rgb(242, 132, 59);"></ion-icon>
-                        Add Portfolio Item
+                        Basic Details
                     </h3>
                     <p id="required" style="color: rgba(128, 128, 128, 0.47);">
                         Required for CS100 Portfolio
@@ -96,8 +164,15 @@
                     </div>
                 </div>
 
+                <div id="page1-error" class="server-alert" hidden></div>
+
                 <div class="parent-box">
-                    <button id="submit" onclick="updateStep(2)">Save Profile & Continue</button>
+                    <button type="button" id="btn-delete-portfolio" class="btn-danger-ghost"
+                        onclick="deleteCurrentPortfolio()" hidden>
+                        <i class="fa-regular fa-trash-can me-1"></i> ลบ Portfolio นี้
+                    </button>
+                    <button type="button" id="submit" class="save-profile-btn ms-auto"
+                        onclick="saveProfileAndContinue()">Save Profile &amp; Continue</button>
                 </div>
             </div>
 
@@ -108,8 +183,8 @@
                         <ion-icon name="folder" style="color: rgb(242, 132, 59);"></ion-icon>
                         Add Portfolio Item
                     </h3>
-                    <p class="head_icon" id="required" style="color: rgba(128, 128, 128, 0.47);">
-                        Editing: Somchai Developer
+                    <p class="head_icon" id="editing-portfolio-label" style="color: rgba(128, 128, 128, 0.47);">
+                        Editing: New Portfolio
                     </p>
                 </div>
 
@@ -129,6 +204,7 @@
                                 <option value="Hackathon / Contest">Hackathon / Contest</option>
                                 <option value="Workshop / Training">Workshop / Training</option>
                                 <option value="Extracurricular">Extracurricular</option>
+                                <option value="Challenge">Challenge</option>
                             </select>
                         </div>
                     </div>
@@ -194,12 +270,14 @@
                 </div>
 
 
+                <div id="page2-error" class="server-alert" hidden></div>
+
                 <div class="parent-box">
                     <a class="back_page" onclick="updateStep(1)">
                         <ion-icon name="arrow-back-circle" style="font-size: 30px;cursor: pointer;"></ion-icon>
                         Back
                     </a>
-                    <button id="submit" class="submit-btn" onclick="additem()"><ion-icon name="add-outline"></ion-icon>
+                    <button type="button" id="submit" class="submit-btn" onclick="additem()"><ion-icon name="add-outline"></ion-icon>
                         Add Item To Portfolio</button>
                 </div>
                 <!-- Added Items for Current Portfolio -->
@@ -230,7 +308,7 @@
                     </p>
                 </div>
 
-                <!-- ================= Portfolio Items Showcase (หน้าที่ 4: ดาส) ================= -->
+                <!-- Portfolio Profile Summary & Showcase -->
                 <section class="profile-summary-card" aria-label="Portfolio profile summary">
                     <div class="profile-summary-top">
                         <div>
@@ -278,7 +356,9 @@
                     <a class="back_page" onclick="updateStep(2)">
                         <ion-icon name="add-outline"></ion-icon> Add More Items
                     </a>
-                    <button id="submit" onclick="updateStep(3)">Save Profile & Continue</button>
+                    <button type="button" id="submit" onclick="exportMyPortfolio()">
+                        <i class="fa-solid fa-download me-1"></i> Export my-portfolio.json
+                    </button>
                 </div>
             </div>
         </div>

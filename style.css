@@ -765,6 +765,400 @@ body {
     overflow-wrap: anywhere;
 }
 
+/* ================= Portfolio Switcher Bar & Challenge Exchange ================= */
+.portfolio-switcher-bar {
+    background-color: #fff7ed;
+    border: 1px solid #fed7aa;
+    border-radius: 14px;
+    padding: 12px 16px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.switcher-top-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 10px;
+}
+
+.switcher-left {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 8px;
+}
+
+.switcher-label {
+    font-size: 13px;
+    font-weight: 700;
+    color: #c2410c;
+    margin-right: 4px;
+}
+
+.portfolio-tabs {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 8px;
+}
+
+.switcher-empty {
+    font-size: 12px;
+    color: #9a3412;
+    opacity: 0.75;
+}
+
+.portfolio-pill {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    padding: 5px 12px;
+    font-size: 12px;
+    font-weight: 600;
+    color: #334155;
+    background-color: #ffffff;
+    border: 1px solid #e2e8f0;
+    border-radius: 999px;
+    cursor: pointer;
+    transition: all 0.18s ease;
+}
+
+.portfolio-pill:hover {
+    border-color: #fb923c;
+    color: #c2410c;
+}
+
+.portfolio-pill.active {
+    color: #ffffff;
+    background-image: linear-gradient(120deg, rgb(254, 151, 82), rgb(255, 90, 35));
+    border-color: transparent;
+    box-shadow: 0 2px 8px rgba(242, 132, 59, 0.35);
+}
+
+.portfolio-pill .pill-dot {
+    opacity: 0.6;
+}
+
+.portfolio-pill .pill-count {
+    font-weight: 400;
+    opacity: 0.9;
+}
+
+.portfolio-pill-new {
+    padding: 5px 12px;
+    font-size: 12px;
+    font-weight: 700;
+    color: #ea580c;
+    background-color: #ffffff;
+    border: 1.5px dashed #fb923c;
+    border-radius: 999px;
+    cursor: pointer;
+    transition: all 0.18s ease;
+}
+
+.portfolio-pill-new:hover {
+    background-color: #ffedd5;
+    border-style: solid;
+}
+
+.server-status-badge {
+    font-size: 11px;
+    font-weight: 600;
+    padding: 4px 10px;
+    border-radius: 999px;
+    white-space: nowrap;
+}
+
+.server-status-badge.status-loading {
+    background-color: #f1f5f9;
+    color: #475569;
+}
+
+.server-status-badge.status-connected {
+    background-color: #dcfce7;
+    color: #166534;
+}
+
+.server-status-badge.status-error {
+    background-color: #fee2e2;
+    color: #991b1b;
+}
+
+.switcher-bottom-row {
+    display: flex;
+    justify-content: flex-end;
+    border-top: 1px dashed rgba(251, 146, 60, 0.35);
+    padding-top: 8px;
+}
+
+.exchange-toggle-btn {
+    background: none;
+    border: none;
+    color: #ea580c;
+    font-size: 13px;
+    font-weight: 700;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 2px 6px;
+    border-radius: 8px;
+    transition: background-color 0.15s ease;
+}
+
+.exchange-toggle-btn:hover {
+    background-color: rgba(251, 146, 60, 0.15);
+}
+
+#exchange-chevron {
+    font-size: 11px;
+    transition: transform 0.2s ease;
+}
+
+#exchange-chevron.rotated {
+    transform: rotate(180deg);
+}
+
+.exchange-panel {
+    margin-top: 4px;
+    padding-top: 12px;
+    border-top: 1px solid #fed7aa;
+}
+
+.exchange-grid {
+    display: grid;
+    grid-template-columns: 1.7fr 1fr;
+    gap: 14px;
+}
+
+.exchange-box {
+    background-color: #ffffff;
+    border: 1px solid #f1f5f9;
+    border-radius: 12px;
+    padding: 12px 14px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.exchange-box-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 6px;
+    font-size: 13px;
+    font-weight: 700;
+    color: #1e293b;
+}
+
+.exchange-textarea {
+    width: 100%;
+    min-height: 110px;
+    padding: 10px 12px;
+    font-size: 12px;
+    font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+    color: #1e293b;
+    background-color: #f8fafc;
+    border: 1px solid #cbd5e1;
+    border-radius: 10px;
+    resize: vertical;
+    outline: none;
+}
+
+.exchange-textarea:focus {
+    background-color: #ffffff;
+    border-color: rgb(242, 132, 59);
+    box-shadow: 0 0 0 3px rgba(242, 132, 59, 0.15);
+}
+
+.exchange-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+}
+
+.exchange-side-actions {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.exchange-hint {
+    font-size: 12px;
+    color: #64748b;
+    margin: 0;
+    line-height: 1.5;
+}
+
+.btn-exchange-primary {
+    padding: 7px 14px;
+    font-size: 12px;
+    font-weight: 600;
+    color: #ffffff;
+    background-image: linear-gradient(to right, rgb(254, 151, 82), rgb(255, 90, 35));
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    text-decoration: none;
+    transition: transform 0.15s ease, opacity 0.15s ease;
+}
+
+.btn-exchange-primary:hover {
+    transform: translateY(-1px);
+    opacity: 0.95;
+    color: #ffffff;
+}
+
+.btn-exchange-outline {
+    padding: 7px 14px;
+    font-size: 12px;
+    font-weight: 600;
+    color: #c2410c;
+    background-color: #fff7ed;
+    border: 1px solid #fdba74;
+    border-radius: 10px;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    text-decoration: none;
+    transition: background-color 0.15s ease;
+}
+
+.btn-exchange-outline:hover {
+    background-color: #ffedd5;
+    color: #9a3412;
+}
+
+.btn-exchange-file {
+    font-size: 11px;
+    font-weight: 600;
+    color: #475569;
+    background-color: #f1f5f9;
+    border: 1px solid #cbd5e1;
+    padding: 4px 10px;
+    border-radius: 8px;
+    cursor: pointer;
+}
+
+.btn-exchange-file:hover {
+    background-color: #e2e8f0;
+}
+
+.btn-exchange-game {
+    padding: 8px 14px;
+    font-size: 12px;
+    font-weight: 600;
+    color: #1d4ed8;
+    background-color: #eff6ff;
+    border: 1px solid #bfdbfe;
+    border-radius: 10px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    text-decoration: none;
+    transition: background-color 0.15s ease;
+}
+
+.btn-exchange-game:hover {
+    background-color: #dbeafe;
+    color: #1e40af;
+}
+
+.btn-danger-ghost {
+    padding: 8px 14px;
+    font-size: 13px;
+    font-weight: 600;
+    color: #dc2626;
+    background-color: #fef2f2;
+    border: 1px solid #fecaca;
+    border-radius: 999px;
+    cursor: pointer;
+    transition: background-color 0.15s ease;
+}
+
+.btn-danger-ghost:hover {
+    background-color: #fee2e2;
+}
+
+/* ================= Server Alert / Validation Box ================= */
+.server-alert,
+.exchange-feedback {
+    font-size: 13px;
+    color: #991b1b;
+    background-color: #fef2f2;
+    border: 1px solid #fecaca;
+    border-radius: 10px;
+    padding: 10px 14px;
+    line-height: 1.5;
+}
+
+.server-alert.is-success,
+.exchange-feedback.is-success {
+    color: #166534;
+    background-color: #f0fdf4;
+    border-color: #bbf7d0;
+}
+
+/* ================= Showcase Reflection Grid & Copy JSON ================= */
+.showcase-reflection-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 10px;
+    margin-top: 8px;
+    padding-top: 10px;
+    border-top: 1px dashed #e2e8f0;
+}
+
+.showcase-ref-box {
+    background-color: #f8fafc;
+    border: 1px solid #e2e8f0;
+    border-radius: 10px;
+    padding: 8px 12px;
+}
+
+.showcase-ref-label {
+    display: block;
+    font-size: 11px;
+    font-weight: 700;
+    color: #ea580c;
+    margin-bottom: 2px;
+}
+
+.showcase-ref-box p {
+    margin: 0;
+    font-size: 13px;
+    color: #334155;
+    line-height: 1.45;
+    overflow-wrap: anywhere;
+}
+
+.btn-copy-json {
+    font-size: 12px;
+    font-weight: 600;
+    color: #475569;
+    background-color: #f1f5f9;
+    border: 1px solid #cbd5e1;
+    padding: 6px 12px;
+    border-radius: 20px;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    transition: all 0.15s ease;
+}
+
+.btn-copy-json:hover {
+    background-color: #e2e8f0;
+    color: #1e293b;
+}
+
 /* ================= Responsive ================= */
 
 /* Tablet (<= 900px) */
@@ -869,6 +1263,16 @@ body {
     }
 
     .portfolio-item-card .btn-evidence {
+        width: 100%;
+        justify-content: center;
+    }
+
+    .exchange-grid,
+    .showcase-reflection-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .portfolio-item-card .btn-copy-json {
         width: 100%;
         justify-content: center;
     }
