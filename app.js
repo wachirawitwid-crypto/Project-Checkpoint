@@ -366,61 +366,140 @@ function updateContent() {
     `).join("");
 }
 
-// ================= localStorage =================
+// ================= localStorage + Server =================
 const STORAGE_KEY = 'portfolioData';
+const API_URL = 'api/portfolio.php';
 const profileFields = ['full-name', 'studen_id', 'enjoy', 'tried', 'curious-about'];
+
+let syncedId = null;   
+let ownerId = null; 
+let syncTimer = null;
+
+function collectData() {
+    const profile = {};
+    profileFields.forEach(id => {
+        profile[id] = document.getElementById(id).value;
+    });
+    return { profile, items, content, counter: ContentIdCounter };
+}
+
+function resetItems() { 
+    items = [];
+    content = [];
+    ContentIdCounter = 1;
+}
+
+function applyData(data) {
+    profileFields.forEach(id => {
+        const el = document.getElementById(id);
+        if (el && data.profile && data.profile[id] !== undefined) {
+            el.value = data.profile[id];
+        }
+    });
+    items = Array.isArray(data.items) ? data.items : [];
+    content = Array.isArray(data.content) ? data.content : [];
+    ContentIdCounter = data.counter || items.length + 1;
+}
 
 function saveData() {
     try {
-        const profile = {};
-        profileFields.forEach(id => {
-            profile[id] = document.getElementById(id).value;
-        });
-        localStorage.setItem(STORAGE_KEY, JSON.stringify({
-            profile,
-            items,
-            content,
-            counter: ContentIdCounter
-        }));
+        const data = collectData();
+        localStorage.setItem(STORAGE_KEY, JSON.stringify(data));
+        scheduleServerSave(data);
     } catch (e) {
         console.error('saveData failed:', e);
     }
 }
 
-function loadData() {
+function scheduleServerSave(data) {
+    const id = data.profile['studen_id'];
+    if (!/^\d{10}$/.test(id) || id !== syncedId) return;  
+    if (!data.profile['full-name'].trim()) return;
+    clearTimeout(syncTimer);
+    syncTimer = setTimeout(() => sendToServer(data), 800); 
+}
+
+async function sendToServer(data) {
+    try {
+        const res = await fetch(API_URL, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(data)
+        });
+        if (!res.ok) {
+            const err = await res.json().catch(() => ({}));
+            console.error('server save failed:', err.error || res.status);
+        }
+    } catch (e) {
+        console.error('server unreachable:', e);
+    }
+}
+
+function loadData() { 
     try {
         const raw = localStorage.getItem(STORAGE_KEY);
         if (!raw) return;
         const data = JSON.parse(raw);
-
-        profileFields.forEach(id => {
-            const el = document.getElementById(id);
-            if (el && data.profile && data.profile[id] !== undefined) {
-                el.value = data.profile[id];
-            }
-        });
-
-        items = data.items || [];
-        content = data.content || [];
-        ContentIdCounter = data.counter || items.length + 1;
+        applyData(data);
+        const savedId = data.profile && data.profile['studen_id'];
+        if (/^\d{10}$/.test(savedId)) ownerId = savedId;
     } catch (e) {
         console.error('loadData failed:', e);
     }
 }
 
-function clearData() {
+async function loadFromServer(id) {
+    syncedId = null;
+    try {
+        const res = await fetch(`${API_URL}?id=${id}`);
+        if (res.status === 404) {  
+            if (ownerId && ownerId !== id) resetItems();
+            ownerId = id;
+            syncedId = id;
+            saveData();
+            updateItem();
+            updateContent();
+            updateProfilePreview();
+            return;
+        }
+        if (!res.ok) { 
+            console.error('loadFromServer failed:', res.status);
+            return;
+        }
+
+        applyData(await res.json());
+        ownerId = id;
+        syncedId = id;
+        localStorage.setItem(STORAGE_KEY, JSON.stringify(collectData()));
+        updateItem();
+        updateContent();
+        updateProfilePreview();
+    } catch (e) {
+        console.error('loadFromServer failed:', e); 
+    }
+}
+
+function clearData() {  
     localStorage.removeItem(STORAGE_KEY);
     location.reload();
 }
 
-// บันทึกโปรไฟล์ทุกครั้งที่พิมพ์
+if (idInput) {
+    idInput.addEventListener('input', function () {
+        if (this.value !== syncedId) syncedId = null;  
+        if (/^\d{10}$/.test(this.value)) loadFromServer(this.value);
+    });
+}
+
 profileFields.forEach(id => {
     const el = document.getElementById(id);
     if (el) el.addEventListener('input', saveData);
 });
 
-// โหลดข้อมูลและแสดงผลตอนเปิดหน้า
 loadData();
 updateItem();
 updateContent();
 updateProfilePreview();
+
+const startId = document.getElementById('studen_id') ? document.getElementById('studen_id').value : '';
+if (/^\d{10}$/.test(startId)) loadFromServer(startId);
