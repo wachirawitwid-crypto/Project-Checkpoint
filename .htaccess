@@ -1,0 +1,13 @@
+# ปิดไม่ให้เปิดดูรายชื่อไฟล์ในโฟลเดอร์ผ่านเว็บ
+Options -Indexes
+
+# บล็อกไม่ให้เปิดไฟล์ระบบหรือไฟล์ลับผ่าน URL โดยตรง
+<FilesMatch "(^\.|\.(env|pem|key|ppk|log|bak|sql|sh)$)">
+    <IfModule mod_authz_core.c>
+        Require all denied
+    </IfModule>
+    <IfModule !mod_authz_core.c>
+        Order allow,deny
+        Deny from all
+    </IfModule>
+</FilesMatch>

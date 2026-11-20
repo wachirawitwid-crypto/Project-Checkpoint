@@ -1,5 +1,9 @@
 *.pem
 *.key
+*.ppk
 .env
+.env.*
 Private/
 .DS_Store
+Thumbs.db
+*.log
