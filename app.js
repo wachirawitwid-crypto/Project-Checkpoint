@@ -562,6 +562,31 @@ async function copyItemJson(id, btn) {
     }
 }
 
+function buildPortfolioExport() {
+    const data = collectData();
+    return {
+        profile: data.profile,
+        items: items.map(buildItemExport)
+    };
+}
+
+function downloadMyPortfolio() {
+    if (items.length === 0) {
+        alert('ยังไม่มีรายการผลงานให้ Export ครับ');
+        return;
+    }
+    const text = JSON.stringify(buildPortfolioExport(), null, 2);
+    const blob = new Blob([text], { type: 'application/json;charset=utf-8' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = 'my-portfolio.json';
+    document.body.appendChild(a);
+    a.click();
+    a.remove();
+    URL.revokeObjectURL(url);
+}
+
 // ================= 4: แสดงผล Portfolio Showcase =================
 function updateProfilePreview() {
     const fullName = document.getElementById('full-name')?.value.trim() || "My profile";
