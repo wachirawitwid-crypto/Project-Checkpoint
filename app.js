@@ -27,7 +27,7 @@ let ContentIdCounter = 1;
 let syncedId = null;
 let ownerId = null;
 let syncTimer = null;
-let allPortfoliosCache = {}; // เก็บข้อมูลทั้งหมดของทุกคนไว้ในตัวแปร
+let allPortfoliosCache = {};
 
 // ================= ฟังก์ชันช่วยเหลือ & ความปลอดภัย =================
 function esc(str) {
@@ -97,7 +97,10 @@ async function loadPortfolioList() {
                     ${esc(p.name)} &bull; ${itemText}
                 </button>
             `;
-        }).join('');
+        }).join('') + `
+    <button type="button" class="pill-btn pill-new" onclick="createNewPortfolio()">
+        + New
+    </button>`;
     } catch (e) {
         console.error('ไม่สามารถโหลดรายชื่อ Portfolio ได้:', e);
     }
@@ -124,9 +127,9 @@ async function switchPortfolio(id) {
     loadPortfolioList();
 
     if (items.length > 0) {
-        updateStep(3);
+        updateStep(3, true);
     } else {
-        updateStep(1);
+        updateStep(1, true);
     }
 }
 
@@ -147,22 +150,94 @@ function applyData(data) {
     });
 
     const rawItems = Array.isArray(data.items) ? data.items : (Array.isArray(data.content) ? data.content : []);
-    items = rawItems.map((it, idx) => ({
-        id: it.id || `Item-${idx + 1}`,
-        title: it.title || '',
-        type: it.type || 'Personal Project',
-        date: it.date || '',
-        role: it.role || '',
-        description: it.description || '',
-        skills: Array.isArray(it.skills) ? it.skills.join(', ') : (it.skills || ''),
-        what_i_did: it.what_i_did ?? it.whatIDid ?? '',
-        what_i_learned: it.what_i_learned ?? it.whatILearned ?? '',
-        challenge: it.challenge ?? '',
-        next_step: it.next_step ?? it.nextStep ?? '',
-        link: it.link ?? it.evidence ?? ''
-    }));
+    items = rawItems.map((it, idx) => {
+        const ref = it.reflection || {};
+        const ev = Array.isArray(it.evidence) ? (it.evidence[0] || '') : (it.link || it.evidence || '');
+        const sk = Array.isArray(it.skills) ? it.skills.join(', ') : (it.skills || '');
+        return {
+            id: it.id || `Item-${idx + 1}`,
+            title: it.title || '',
+            type: it.type || 'Personal Project',
+            date: it.date || '-',
+            role: it.role || '-',
+            description: it.description || '-',
+            skills: sk,
+            what_i_did: it.what_i_did ?? ref.whatIDid ?? it.whatIDid ?? '-',
+            what_i_learned: it.what_i_learned ?? ref.whatILearned ?? it.whatILearned ?? '-',
+            challenge: it.challenge ?? ref.challenge ?? '-',
+            next_step: it.next_step ?? ref.nextStep ?? it.nextStep ?? '-',
+            link: ev
+        };
+    });
 
     ContentIdCounter = Math.max(Number(data.counter) || 1, getNextCounter(items));
+}
+
+// ================= ระบบ Import Items จากไฟล์ JSON (ไม่บังคับครบทุกช่อง) =================
+function importPortfolioItems(event) {
+    const file = event.target.files?.[0];
+    if (!file) return;
+
+    const reader = new FileReader();
+    reader.onload = function (e) {
+        try {
+            const raw = JSON.parse(e.target.result);
+            let extractedItems = [];
+
+            if (Array.isArray(raw)) {
+                raw.forEach(person => {
+                    if (Array.isArray(person.items)) {
+                        extractedItems.push(...person.items);
+                    }
+                });
+            } else if (Array.isArray(raw.items)) {
+                extractedItems = raw.items;
+            } else if (Array.isArray(raw.content)) {
+                extractedItems = raw.content;
+            } else if (raw && typeof raw === 'object' && raw.title) {
+                extractedItems = [raw];
+            }
+
+            if (extractedItems.length === 0) {
+                alert('ไม่พบรายการ items ในไฟล์ JSON นี้ครับ');
+                return;
+            }
+
+            const mappedItems = extractedItems.map(it => {
+                const ref = it.reflection || {};
+                const ev = Array.isArray(it.evidence) ? (it.evidence[0] || '') : (it.link || it.evidence || '');
+                const sk = Array.isArray(it.skills) ? it.skills.join(', ') : (it.skills || '');
+
+                return {
+                    id: `Item-${ContentIdCounter++}`,
+                    title: it.title || 'Untitled Item',
+                    type: it.type || 'Personal Project',
+                    date: it.date || '-',
+                    role: it.role || '-',
+                    description: it.description || '-',
+                    skills: sk,
+                    what_i_did: it.what_i_did ?? ref.whatIDid ?? it.whatIDid ?? '-',
+                    what_i_learned: it.what_i_learned ?? ref.whatILearned ?? it.whatILearned ?? '-',
+                    challenge: it.challenge ?? ref.challenge ?? '-',
+                    next_step: it.next_step ?? ref.nextStep ?? it.nextStep ?? '-',
+                    link: ev
+                };
+            });
+
+            items.push(...mappedItems);
+            updateItem();
+            updateContent();
+            scheduleServerSave();
+
+            alert(`Import สำเร็จ! ดึงรายการผลงานเข้ามา ${mappedItems.length} รายการเรียบร้อยครับ`);
+        } catch (err) {
+            console.error(err);
+            alert('ไฟล์ JSON รูปแบบไม่ถูกต้อง ไม่สามารถอ่านได้ครับ');
+        } finally {
+            event.target.value = '';
+        }
+    };
+    reader.readAsText(file);
 }
 
 // เคลียร์ฟอร์มทั้งหมดและกลับไปหน้าแรก (Step 1)
@@ -193,13 +268,12 @@ function clearAllFormsAndReset() {
     document.getElementById('full-name')?.focus();
 }
 
-// ผูกกับปุ่ม + New ด้านบน
 function createNewPortfolio() {
     clearAllFormsAndReset();
 }
 
 // ================= การเปลี่ยนหน้า (Step Navigation) =================
-function updateStep(newStep) {
+function updateStep(newStep, force = false) {
     if (newStep === 2 && currentStep < 2) {
         if (!check(2)) return;
         scheduleServerSave();
@@ -211,8 +285,7 @@ function updateStep(newStep) {
         }
         scheduleServerSave();
     }
-    // กดปุ่ม Next / Save ในหน้า 3: บันทึกลง Server แล้วเคลียร์ฟอร์มกลับไปหน้าแรกทันที
-    if (newStep === 3 && currentStep === 3) {
+    if (newStep === 3 && currentStep === 3 && !force) {
         sendToServer(collectData(), true).then((success) => {
             if (success) {
                 clearAllFormsAndReset();
@@ -342,9 +415,10 @@ function check(targetStep) {
             }
         }
 
+        // ไม่บังคับใส่ Link แล้ว (แต่ถ้ากรอกมาต้องขึ้นต้นด้วย http:// หรือ https://)
         const urlInput = document.getElementById('input-url');
-        if (urlInput && !isValidHttpUrl(urlInput.value.trim())) {
-            alert('กรุณากรอก EVIDENCE เป็นลิงก์ URL ที่ถูกต้อง (ขึ้นต้นด้วย http:// หรือ https://) ครับ');
+        if (urlInput && urlInput.value.trim() !== '' && !isValidHttpUrl(urlInput.value.trim())) {
+            alert('หากกรอก EVIDENCE กรุณาใส่ลิงก์ URL ที่ถูกต้อง (ขึ้นต้นด้วย http:// หรือ https://) ครับ');
             urlInput.focus();
             return false;
         }
@@ -392,7 +466,7 @@ function additem() {
         what_i_learned: document.getElementById("item_learned").value.trim(),
         challenge: document.getElementById("item_challenge").value.trim(),
         next_step: document.getElementById("item_next").value.trim(),
-        link: document.getElementById("input-url").value.trim()
+        link: document.getElementById("input-url")?.value.trim() || ''
     };
 
     items.push(newItem);
@@ -417,7 +491,78 @@ function removeItem(id) {
     scheduleServerSave();
 }
 
-// ================= หน้า 3: แสดงผล Portfolio Showcase =================
+// ================= 3:Export Item เป็น JSON (ดาวน์โหลด / คัดลอก) =================
+function buildItemExport(item) {
+    return {
+        id: item.id,
+        title: item.title,
+        type: item.type,
+        date: item.date,
+        role: item.role,
+        description: item.description,
+        skills: (item.skills || '').split(',').map(s => s.trim()).filter(Boolean),
+        reflection: {
+            whatIDid: item.what_i_did,
+            whatILearned: item.what_i_learned,
+            challenge: item.challenge,
+            nextStep: item.next_step
+        },
+        evidence: item.link ? [item.link] : []
+    };
+}
+
+function getItemJsonText(id) {
+    const item = items.find(it => it.id === id);
+    if (!item) return null;
+    return JSON.stringify(buildItemExport(item), null, 2);
+}
+
+function downloadItemJson(id) {
+    const text = getItemJsonText(id);
+    if (!text) return;
+    const item = items.find(it => it.id === id);
+    const safeName = String(item.title).replace(/[^A-Za-z0-9ก-๙\-]+/g, '_').replace(/^_+|_+$/g, '') || id;
+
+    const blob = new Blob([text], { type: 'application/json;charset=utf-8' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = `${id}-${safeName}.json`;
+    document.body.appendChild(a);
+    a.click();
+    a.remove();
+    URL.revokeObjectURL(url);
+}
+
+async function copyItemJson(id, btn) {
+    const text = getItemJsonText(id);
+    if (!text) return;
+
+    let ok = false;
+    try {
+        // ใช้ได้เฉพาะ https หรือ localhost
+        await navigator.clipboard.writeText(text);
+        ok = true;
+    } catch {
+        // fallback สำหรับ http://<EC2-IP> ที่ไม่ใช่ secure context
+        const ta = document.createElement('textarea');
+        ta.value = text;
+        ta.style.position = 'fixed';
+        ta.style.opacity = '0';
+        document.body.appendChild(ta);
+        ta.select();
+        try { ok = document.execCommand('copy'); } catch { ok = false; }
+        ta.remove();
+    }
+
+    if (btn) {
+        const old = btn.textContent;
+        btn.textContent = ok ? 'Copied!' : 'Copy failed';
+        setTimeout(() => { btn.textContent = old; }, 1500);
+    }
+}
+
+// ================= 4: แสดงผล Portfolio Showcase =================
 function updateProfilePreview() {
     const fullName = document.getElementById('full-name')?.value.trim() || "My profile";
     const id = document.getElementById('studen_id')?.value.trim() || "-";
@@ -447,7 +592,13 @@ function updateContent() {
     }
 
     ContentList.innerHTML = items.map((item, index) => {
-        const safeLink = isValidHttpUrl(item.link) ? esc(item.link) : '#';
+        const hasValidLink = isValidHttpUrl(item.link);
+        const evidenceBtn = hasValidLink
+            ? `<a href="${esc(item.link)}" target="_blank" rel="noopener noreferrer" class="btn-evidence">
+                   <i class="fa-solid fa-arrow-up-right-from-square me-1"></i> View Evidence
+               </a>`
+            : '';
+
         const skillBadges = (item.skills || '')
             .split(',')
             .map(s => s.trim())
@@ -464,9 +615,17 @@ function updateContent() {
                     <h5 class="item-card-title mt-2 mb-1 fw-bold">${esc(item.title)}</h5>
                     <p class="item-role-text text-muted mb-0"><i class="fa-solid fa-user-gear me-1"></i>Role: ${esc(item.role || '-')}</p>
                 </div>
-                <a href="${safeLink}" target="_blank" rel="noopener noreferrer" class="btn-evidence">
-                    <i class="fa-solid fa-arrow-up-right-from-square me-1"></i> View Evidence
-                </a>
+                <div class="d-flex gap-2 flex-wrap">
+                    ${evidenceBtn}
+                    <button type="button" class="btn btn-sm btn-outline-secondary"
+                            onclick="downloadItemJson('${esc(item.id)}')">
+                        Download JSON
+                    </button>
+                    <button type="button" class="btn btn-sm btn-outline-secondary"
+                            onclick="copyItemJson('${esc(item.id)}', this)">
+                        Copy JSON
+                    </button>
+                </div>
             </div>
             <p class="item-card-desc mb-2">${esc(item.description || '-')}</p>
             ${skillBadges ? `<div class="mb-2">${skillBadges}</div>` : ''}
