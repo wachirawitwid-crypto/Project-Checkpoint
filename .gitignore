@@ -1,5 +1,7 @@
+Private/
 *.pem
 *.key
 .env
-Private/
+.env.*
 .DS_Store
+node_modules/

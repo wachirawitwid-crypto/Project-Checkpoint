@@ -5,14 +5,6 @@ declare(strict_types=1);
 // เก็บไฟล์ JSON นอกโฟลเดอร์ Public Web Root ป้องกันการเข้าถึงผ่าน URL โดยตรง
 define('DATA_DIR', dirname(__DIR__, 2) . '/Private/portfolios');
 
-const ALLOWED_ITEM_TYPES = [
-    'Course Assignment',
-    'Personal Project',
-    'Hackathon / Contest',
-    'Workshop / Training',
-    'Extracurricular',
-];
-
 function is_valid_portfolio_id($id): bool
 {
     return is_string($id) && preg_match('/^[0-9]{10}$/', $id) === 1;
@@ -39,12 +31,6 @@ function is_safe_url($url): bool
     return $scheme === 'http' || $scheme === 'https';
 }
 
-function is_valid_date(string $date): bool
-{
-    $dt = DateTime::createFromFormat('Y-m-d', $date);
-    return $dt !== false && $dt->format('Y-m-d') === $date;
-}
-
 function sendJson(array $data, int $statusCode = 200): void
 {
     http_response_code($statusCode);
@@ -54,10 +40,42 @@ function sendJson(array $data, int $statusCode = 200): void
     exit;
 }
 
+// สร้างชื่อไฟล์: portfolio-ชื่อคนกด.json
+function makePortfolioFilePath(string $fullName, string $portfolioId): string
+{
+    $safeName = preg_replace('/[^A-Za-z0-9ก-๙\-]+/u', '_', trim($fullName));
+    $safeName = trim((string) $safeName, '_');
+    if ($safeName === '') {
+        $safeName = $portfolioId;
+    }
+    return DATA_DIR . '/portfolio-' . $safeName . '.json';
+}
+
+// ค้นหาไฟล์ของ ID 10 หลักนี้
+function findFileByPortfolioId(string $portfolioId): ?string
+{
+    if (!is_dir(DATA_DIR)) {
+        return null;
+    }
+    $files = glob(DATA_DIR . '/*.json') ?: [];
+    foreach ($files as $file) {
+        $data = json_decode((string) file_get_contents($file), true);
+        if (!is_array($data)) {
+            continue;
+        }
+        $p = $data['profile'] ?? $data;
+        $id = (string) ($p['studen_id'] ?? $p['student_id'] ?? '');
+        if ($id === $portfolioId) {
+            return $file;
+        }
+    }
+    return null;
+}
+
 function readPortfolio(string $portfolioId): ?array
 {
-    $file = DATA_DIR . '/' . "portfolio" . $portfolioId . '.json';
-    if (!file_exists($file)) {
+    $file = findFileByPortfolioId($portfolioId);
+    if ($file === null || !file_exists($file)) {
         return null;
     }
     $json = file_get_contents($file);
@@ -75,12 +93,31 @@ function writePortfolio(string $portfolioId, array $data): bool
             return false;
         }
     }
-    $file = DATA_DIR . '/' . $portfolioId . '.json';
+
+    $fullName = (string) ($data['profile']['full-name'] ?? $portfolioId);
+    $targetFile = makePortfolioFilePath($fullName, $portfolioId);
+
+    // ลบไฟล์ชื่อเก่าของ ID นี้หากมีการเปลี่ยนชื่อ
+    $existingFile = findFileByPortfolioId($portfolioId);
+    if ($existingFile !== null && $existingFile !== $targetFile && file_exists($existingFile)) {
+        @unlink($existingFile);
+    }
+
+    // กันเขียนทับหากคนอื่นตั้งชื่อซ้ำกัน
+    if (file_exists($targetFile)) {
+        $existingData = json_decode((string) file_get_contents($targetFile), true);
+        $existingOwnerId = (string) ($existingData['profile']['studen_id'] ?? '');
+        if ($existingOwnerId !== '' && $existingOwnerId !== $portfolioId) {
+            $safeName = preg_replace('/[^A-Za-z0-9ก-๙\-]+/u', '_', trim($fullName));
+            $targetFile = DATA_DIR . '/portfolio-' . trim((string) $safeName, '_') . '-' . $portfolioId . '.json';
+        }
+    }
+
     $json = json_encode($data, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE);
     if ($json === false) {
         return false;
     }
-    return file_put_contents($file, $json, LOCK_EX) !== false;
+    return file_put_contents($targetFile, $json, LOCK_EX) !== false;
 }
 
 function listAllPortfolios(): array
@@ -88,7 +125,6 @@ function listAllPortfolios(): array
     if (!is_dir(DATA_DIR)) {
         return [];
     }
-    // ค้นหาไฟล์ .json ทั้งหมดในโฟลเดอร์ (รองรับทั้ง portfolio_xxxx.json และ xxxx.json)
     $files = glob(DATA_DIR . '/*.json') ?: [];
     $list = [];
     foreach ($files as $file) {
@@ -105,7 +141,7 @@ function listAllPortfolios(): array
             'id' => (string) $id,
             'name' => $p['full-name'] ?? $p['fullName'] ?? 'Unknown',
             'count' => is_array($data['items'] ?? null) ? count($data['items']) : 0,
-            'fullData' => $data // ส่งข้อมูลทั้งหมดมาด้วยเลย
+            'fullData' => $data
         ];
     }
     return $list;
@@ -148,7 +184,7 @@ function validateAndSanitizePayload($payload): array
         sendJson(['error' => 'curious-about is required and must not exceed 1000 characters'], 400);
     }
 
-    // 2. ตรวจสอบ Items
+    // 2. ตรวจสอบ Items (ยืดหยุ่นรองรับข้อมูลที่ Import เข้ามา)
     $rawItems = $payload['items'] ?? [];
     if (!is_array($rawItems)) {
         sendJson(['error' => 'items must be an array'], 400);
@@ -163,9 +199,9 @@ function validateAndSanitizePayload($payload): array
             sendJson(['error' => "Item at index {$index} is invalid"], 400);
         }
 
-        $itemId = trim((string) ($item['id'] ?? ''));
-        if ($itemId === '' || str_length($itemId) > 50) {
-            sendJson(['error' => "Invalid item id at index {$index}"], 400);
+        $itemId = trim((string) ($item['id'] ?? 'Item-' . ($index + 1)));
+        if ($itemId === '') {
+            $itemId = 'Item-' . ($index + 1);
         }
 
         $title = trim((string) ($item['title'] ?? ''));
@@ -173,47 +209,35 @@ function validateAndSanitizePayload($payload): array
             sendJson(['error' => "Invalid item title at index {$index}"], 400);
         }
 
-        $type = trim((string) ($item['type'] ?? ''));
-        if (!in_array($type, ALLOWED_ITEM_TYPES, true)) {
-            sendJson(['error' => "Invalid item type at index {$index}"], 400);
+        $type = trim((string) ($item['type'] ?? 'Personal Project'));
+        if ($type === '' || str_length($type) > 100) {
+            $type = 'Personal Project';
         }
 
-        $date = trim((string) ($item['date'] ?? ''));
-        if (!is_valid_date($date)) {
-            sendJson(['error' => "Invalid item date at index {$index}"], 400);
+        $date = trim((string) ($item['date'] ?? '-'));
+        if ($date === '' || str_length($date) > 50) {
+            $date = '-';
         }
 
-        $role = trim((string) ($item['role'] ?? ''));
-        if ($role === '' || str_length($role) > 100) {
-            sendJson(['error' => "Invalid item role at index {$index}"], 400);
+        $role = trim((string) ($item['role'] ?? '-'));
+        if ($role === '') {
+            $role = '-';
         }
 
-        $description = trim((string) ($item['description'] ?? ''));
-        if ($description === '' || str_length($description) > 2000) {
-            sendJson(['error' => "Invalid item description at index {$index}"], 400);
+        $description = trim((string) ($item['description'] ?? '-'));
+        if ($description === '') {
+            $description = '-';
         }
 
         $skills = trim((string) ($item['skills'] ?? ''));
-        if ($skills === '' || str_length($skills) > 500) {
-            sendJson(['error' => "Invalid item skills at index {$index}"], 400);
-        }
+        $whatIDid = trim((string) ($item['what_i_did'] ?? '-'));
+        $whatILearned = trim((string) ($item['what_i_learned'] ?? '-'));
+        $challenge = trim((string) ($item['challenge'] ?? '-'));
+        $nextStep = trim((string) ($item['next_step'] ?? '-'));
 
-        $whatIDid = trim((string) ($item['what_i_did'] ?? ''));
-        $whatILearned = trim((string) ($item['what_i_learned'] ?? ''));
-        $challenge = trim((string) ($item['challenge'] ?? ''));
-        $nextStep = trim((string) ($item['next_step'] ?? ''));
-
-        if (
-            $whatIDid === '' || str_length($whatIDid) > 1000 ||
-            $whatILearned === '' || str_length($whatILearned) > 1000 ||
-            $challenge === '' || str_length($challenge) > 1000 ||
-            $nextStep === '' || str_length($nextStep) > 1000
-        ) {
-            sendJson(['error' => "All 4 reflection fields are required at index {$index}"], 400);
-        }
-
+        // ไม่บังคับใส่ Link แต่ถ้าใส่มาต้องเป็น http/https ที่ถูกต้อง
         $link = trim((string) ($item['link'] ?? ''));
-        if (!is_safe_url($link)) {
+        if ($link !== '' && !is_safe_url($link)) {
             sendJson(['error' => "Invalid evidence URL at index {$index}"], 400);
         }
 
@@ -225,10 +249,10 @@ function validateAndSanitizePayload($payload): array
             'role' => $role,
             'description' => $description,
             'skills' => $skills,
-            'what_i_did' => $whatIDid,
-            'what_i_learned' => $whatILearned,
-            'challenge' => $challenge,
-            'next_step' => $nextStep,
+            'what_i_did' => $whatIDid === '' ? '-' : $whatIDid,
+            'what_i_learned' => $whatILearned === '' ? '-' : $whatILearned,
+            'challenge' => $challenge === '' ? '-' : $challenge,
+            'next_step' => $nextStep === '' ? '-' : $nextStep,
             'link' => $link,
         ];
     }
