@@ -30,6 +30,18 @@
             <span class="icon_title">CS100 TEAM PROJECT</span>
             <h1>Power Up! Portfolio</h1>
 
+            <!-- แถบเลือก Portfolio ด้านบน -->
+            <div class="portfolio-bar-wrapper mb-4">
+                <div id="portfolio-switcher" class="portfolio-bar">
+                    <span class="portfolio-bar-label">เลือก Portfolio:</span>
+                    <div id="portfolio-pills" class="portfolio-pills">
+                        <!-- ปุ่มชื่อ Portfolio จะถูกสร้างจาก JS อัตโนมัติ -->
+                    </div>
+                    <button type="button" class="pill-btn pill-new" onclick="updateStep(1)">
+                        + New
+                    </button>
+                </div>
+            </div>
             <!-- Progress Bar -->
             <div class="bar">
                 <!-- สเต็ปที่ 1 -->
@@ -56,7 +68,7 @@
                         <ion-icon name="bookmarks" style="color: rgb(242, 132, 59);"></ion-icon>
                         Add Portfolio Item
                     </h3>
-                    <p id="required" style="color: rgba(128, 128, 128, 0.47);">
+                    <p class="required" style="color: rgba(128, 128, 128, 0.47);">
                         Required for CS100 Portfolio
                     </p>
                 </div>
@@ -97,7 +109,7 @@
                 </div>
 
                 <div class="parent-box">
-                    <button id="submit" onclick="updateStep(2)">Save Profile & Continue</button>
+                    <button class="submit-btn" onclick="updateStep(2)">Save Profile & Continue</button>
                 </div>
             </div>
 
@@ -108,7 +120,7 @@
                         <ion-icon name="folder" style="color: rgb(242, 132, 59);"></ion-icon>
                         Add Portfolio Item
                     </h3>
-                    <p class="head_icon" id="required" style="color: rgba(128, 128, 128, 0.47);">
+                    <p class="head_icon required" style="color: rgba(128, 128, 128, 0.47);">
                         Editing: Somchai Developer
                     </p>
                 </div>
@@ -199,7 +211,7 @@
                         <ion-icon name="arrow-back-circle" style="font-size: 30px;cursor: pointer;"></ion-icon>
                         Back
                     </a>
-                    <button id="submit" class="submit-btn" onclick="additem()"><ion-icon name="add-outline"></ion-icon>
+                    <button class="submit-btn" onclick="additem()"><ion-icon name="add-outline"></ion-icon>
                         Add Item To Portfolio</button>
                 </div>
                 <!-- Added Items for Current Portfolio -->
@@ -214,7 +226,7 @@
                     </div>
                 </div>
                 <div class="parent-box">
-                    <button id="submit" onclick="updateStep(3)">Save Profile & Continue</button>
+                    <button class="submit-btn" onclick="updateStep(3)">Save Profile & Continue</button>
                 </div>
             </div>
 
@@ -225,7 +237,7 @@
                         <ion-icon name="ribbon" style="color: rgb(242, 132, 59);"></ion-icon>
                         Learning Portfolio Showcase
                     </h3>
-                    <p class="head_icon" id="required" style="color: rgba(128, 128, 128, 0.47);">
+                    <p class="head_icon required" style="color: rgba(128, 128, 128, 0.47);">
                         Portfolio Summary & Showcase
                     </p>
                 </div>
@@ -278,7 +290,7 @@
                     <a class="back_page" onclick="updateStep(2)">
                         <ion-icon name="add-outline"></ion-icon> Add More Items
                     </a>
-                    <button id="submit" onclick="updateStep(3)">Save Profile & Continue</button>
+                    <button class="submit-btn" onclick="updateStep(3)">Save Profile & Continue</button>
                 </div>
             </div>
         </div>
